@@ -1,0 +1,2 @@
+class LuciferaseValue < ApplicationRecord
+end
