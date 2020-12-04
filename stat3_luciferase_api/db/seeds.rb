@@ -1,6 +1,6 @@
 require 'csv'
 
-variants = CSV.parse(File.read('./db/data/variant.csv'), headers: :first_row)
+variants = CSV.parse(File.read('./db/data/variants.csv'), headers: :first_row)
 
 variants.each do |v|
     Variant.create(protein_variant: v['protein_variant'], wt_amino_acid: v['wt_amino_acid'], 
