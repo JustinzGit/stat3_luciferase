@@ -5,7 +5,7 @@ class VariantsController < ApplicationController
   def index
     @variants = Variant.all
 
-    render json: @variants
+    render json: @variants, except: [:created_at, :updated_at]
   end
 
   # GET /variants/1
