@@ -7,6 +7,11 @@ variants.each do |v|
         mt_amino_acid: v['mt_amino_acid'], aa_position: v['aa_position'])
 end 
 
+experiments = CSV.parse(File.read('./db/data/experiments.csv'), headers: :first_row)
+
+experiments.each do |e|
+    Experiment.create(date: e['date'], wt_firefly: e['wt_firefly'], wt_renilla: e['wt_renilla'])
+end
 
 luciferase_values = CSV.parse(File.read('./db/data/luciferase_values.csv'), headers: :first_row)
 
