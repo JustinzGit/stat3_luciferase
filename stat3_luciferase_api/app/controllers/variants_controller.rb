@@ -10,7 +10,7 @@ class VariantsController < ApplicationController
   # GET /variants/A106V
   def show
     @variant = Variant.find_by(protein_variant: params[:protein_variant])
-    render json: @variant
+    render json: @variant, except: [:created_at, :updated_at]
   end
 
   # # POST /variants
