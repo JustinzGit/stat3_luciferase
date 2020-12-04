@@ -8,8 +8,9 @@ class VariantsController < ApplicationController
     render json: @variants, except: [:created_at, :updated_at]
   end
 
-  # GET /variants/1
+  # GET /variants/A106V
   def show
+    @variant = Variant.find_by(protein_variant: params[:protein_variant])
     render json: @variant
   end
 
