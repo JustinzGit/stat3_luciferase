@@ -3,7 +3,7 @@ class VariantSerializer < ActiveModel::Serializer
 
   def experiments
     object.experiments.map do |experiment|
-      ExperimentSerializer.new(experiment, variant: object)
+      VariantExperimentSerializer.new(experiment, variant: object)
     end
   end
 end

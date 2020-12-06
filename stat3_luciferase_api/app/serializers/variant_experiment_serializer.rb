@@ -1,4 +1,4 @@
-class ExperimentSerializer < ActiveModel::Serializer
+class VariantExperimentSerializer < ActiveModel::Serializer
   attributes :date, :wt_firefly, :wt_renilla
   attribute :luciferase_values
 
