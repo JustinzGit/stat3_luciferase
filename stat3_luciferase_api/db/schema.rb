@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_02_044018) do
+ActiveRecord::Schema.define(version: 2020_12_09_014635) do
 
   create_table "experiments", force: :cascade do |t|
-    t.string "date"
+    t.date "date"
     t.integer "wt_firefly"
     t.integer "wt_renilla"
     t.datetime "created_at", precision: 6, null: false
