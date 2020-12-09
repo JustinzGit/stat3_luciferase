@@ -7,10 +7,12 @@ class ExperimentsController < ApplicationController
     render json: @experiments
   end
 
-  # # GET /experiments/1
-  # def show
-  #   render json: @experiment
-  # end
+  # GET /experiments/1
+  def show
+    @experiment = Experiment.find_by(date: params[:date])
+    
+    render json: @experiment
+  end
 
   # # POST /experiments
   # def create
