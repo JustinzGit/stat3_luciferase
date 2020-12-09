@@ -1,6 +1,4 @@
-Rails.application.routes.draw do
-  resources :luciferase_values
-  
+Rails.application.routes.draw do  
   resources :experiments, only: [:index]
   get '/experiments/:date', to: 'experiments#show'
 
