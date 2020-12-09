@@ -10,7 +10,9 @@ end
 experiments = CSV.parse(File.read('./db/data/experiments.csv'), headers: :first_row)
 
 experiments.each do |e|
-    Experiment.create(date: e['date'], wt_firefly: e['wt_firefly'], wt_renilla: e['wt_renilla'])
+    date = e['date'].split(".")
+    date = "#{date[2]}-#{date[0]}-#{date[1]}"
+    Experiment.create(date: date, wt_firefly: e['wt_firefly'], wt_renilla: e['wt_renilla'])
 end
 
 luciferase_values = CSV.parse(File.read('./db/data/luciferase_values.csv'), headers: :first_row)
