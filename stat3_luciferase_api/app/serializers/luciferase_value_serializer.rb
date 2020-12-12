@@ -1,5 +1,5 @@
 class LuciferaseValueSerializer < ActiveModel::Serializer
-  attributes :firefly, :renilla
+  attributes :firefly, :renilla, :ff_ren_ratio, :fold_change
 
   def variant
     variant = Variant.find(self.object.variant_id)
