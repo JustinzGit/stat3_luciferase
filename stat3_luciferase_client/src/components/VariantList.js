@@ -12,10 +12,27 @@ class VariantList extends Component {
             this.setState({ variantList: variantList }, () => {console.log(this.state)})
         })
     }
+
+    renderVariantList = () => {
+        return this.state.variantList.map(variant => {
+            return(
+                <tr>
+                    <td>{variant.protein_variant}</td>
+                </tr>
+            )
+        })
+    }
     
     render(){
         return(
-            <div>hello world</div>
+            <div id="variant-list">
+                <table>
+                    <tr>
+                        <th>Variant</th>
+                    </tr>
+                    {this.renderVariantList()}
+                </table>
+            </div>
         )
     }
 }
