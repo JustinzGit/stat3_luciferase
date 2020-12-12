@@ -47,11 +47,13 @@ class VariantList extends Component {
             <div id="variant-list">
                 <button onClick={this.sortByFoldChange}>Sort By Fold Change</button>
                 <table>
-                    <tr>
-                        <th>Variant</th>
-                        <th>Fold Change</th>
-                    </tr>
-                    {this.renderVariantList()}
+                    <tbody>
+                        <tr>
+                            <th>Variant</th>
+                            <th>Fold Change</th>
+                        </tr>
+                        {this.renderVariantList()}
+                    </tbody>
                 </table>
             </div>
         )
