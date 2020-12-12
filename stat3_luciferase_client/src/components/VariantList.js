@@ -9,7 +9,7 @@ class VariantList extends Component {
         fetch('http://localhost:3001/variants', { credentials: 'include' })
         .then(response => response.json())
         .then(variantList => {
-            this.setState({ variantList: variantList }, () => {console.log(this.state)})
+            this.setState({ variantList: variantList })
         })
     }
 
@@ -18,6 +18,7 @@ class VariantList extends Component {
             return(
                 <tr>
                     <td>{variant.protein_variant}</td>
+                    <td>{variant.avg_fold_change}</td>
                 </tr>
             )
         })
@@ -29,6 +30,7 @@ class VariantList extends Component {
                 <table>
                     <tr>
                         <th>Variant</th>
+                        <th>Fold Change</th>
                     </tr>
                     {this.renderVariantList()}
                 </table>
