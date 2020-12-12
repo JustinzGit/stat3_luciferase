@@ -1,17 +1,14 @@
-import React, { Component } from "react"
+import React from "react"
 
-class Variant extends Component {
-    state = {
-        variantData: []
-    }
+import { useParams } from 'react-router-dom'
 
-    render(){
-        return(
-            <div>
-                Hello World
-            </div>
-        )
-    }
+function Variant() {
+    let { protein_variant } = useParams()
+    return(
+        <div>
+            <p>{protein_variant}</p>
+        </div>
+    )
 }
 
 export default Variant
