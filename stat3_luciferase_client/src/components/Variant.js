@@ -4,20 +4,21 @@ import { useParams } from 'react-router-dom'
 
 function Variant() {
     const { protein_variant } = useParams()
-    const [variant, setVariant] = useState()
+    const [variant, setVariant] = useState({})
 
     useEffect(() => {
         fetch(`http://localhost:3001/variants/${protein_variant}`, { credentials: 'include' })
         .then(response => response.json())
         .then(variant => {
             setVariant(variant)
-            console.log(variant)
         })
-    }, [])
+    })
 
     return(
         <div>
-            <p>{protein_variant}</p>
+           <p>Protien Variant: {variant.protein_variant}</p>
+           <p>Average Fold Change: {variant.avg_fold_change}</p>
+           <p>GOF? {variant.gof ? "Yes" : "No"}</p>
         </div>
     )
 }
