@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_12_024238) do
+ActiveRecord::Schema.define(version: 2020_12_12_024548) do
 
   create_table "experiments", force: :cascade do |t|
     t.date "date"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_024238) do
     t.float "wt_renilla"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "ff_ren_ratio"
   end
 
   create_table "luciferase_values", force: :cascade do |t|
@@ -27,6 +28,8 @@ ActiveRecord::Schema.define(version: 2020_12_12_024238) do
     t.integer "experiment_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "ff_ren_ratio"
+    t.float "fold_change"
   end
 
   create_table "variants", force: :cascade do |t|
