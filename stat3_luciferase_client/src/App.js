@@ -1,8 +1,14 @@
+import { Switch, Route } from 'react-router-dom'
+
+import VariantList from './components/VariantList'
+
 function App() {
   return (
-    <div className="App">
-      <p>Where to define routes</p>
-    </div>
+    <Switch>
+      <Route path={'/variants'}>
+          <VariantList />
+      </Route>
+    </Switch>
   );
 }
 
