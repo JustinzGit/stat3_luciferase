@@ -33,3 +33,14 @@ luciferase_values.each do |lv|
     LuciferaseValue.create(firefly: ff, renilla: ren, ff_ren_ratio: ff_ren_ratio, fold_change: fold_change, 
         variant_id: lv['variant_id'], experiment_id: lv['experiment_id'])
 end
+
+variants = Variant.all
+variants.each do |v|
+    luciferase_values = v.luciferase_values.map{|lv| lv.fold_change}
+    if !luciferase_values.empty?
+        fold_change_total = luciferase_values.reduce(:+)
+        avg_fold_change = fold_change_total/luciferase_values.size
+        v.avg_fold_change = avg_fold_change
+        v.avg_fold_change.to_i > 1 ? v.gof = true : v.gof = false
+    end 
+end 
