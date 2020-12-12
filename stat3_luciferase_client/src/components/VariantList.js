@@ -23,10 +23,19 @@ class VariantList extends Component {
             )
         })
     }
+
+    sortByFoldChange = () => {
+        const sortedVariantList = this.state.variantList.sort(function(a, b){
+            return a.avg_fold_change - b.avg_fold_change
+        })
+
+        this.setState({variantList: sortedVariantList})
+    }
     
     render(){
         return(
             <div id="variant-list">
+                <button onClick={this.sortByFoldChange}>Sort By Fold Change</button>
                 <table>
                     <tr>
                         <th>Variant</th>
