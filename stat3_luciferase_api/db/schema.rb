@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_12_024548) do
+ActiveRecord::Schema.define(version: 2020_12_12_034830) do
 
   create_table "experiments", force: :cascade do |t|
     t.date "date"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_024548) do
     t.boolean "gof"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "avg_fold_change"
   end
 
 end
