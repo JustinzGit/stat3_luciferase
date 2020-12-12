@@ -10,19 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_09_014635) do
+ActiveRecord::Schema.define(version: 2020_12_12_024238) do
 
   create_table "experiments", force: :cascade do |t|
     t.date "date"
-    t.integer "wt_firefly"
-    t.integer "wt_renilla"
+    t.float "wt_firefly"
+    t.float "wt_renilla"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "luciferase_values", force: :cascade do |t|
-    t.integer "firefly"
-    t.integer "renilla"
+    t.float "firefly"
+    t.float "renilla"
     t.integer "variant_id"
     t.integer "experiment_id"
     t.datetime "created_at", precision: 6, null: false
