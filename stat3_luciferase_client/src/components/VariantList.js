@@ -21,7 +21,7 @@ class VariantList extends Component {
     renderVariantList = () => {
         return this.state.variantList.map(variant => {
             return(
-                <tr>
+                <tr key={variant.id}>
                     <td>{variant.protein_variant}</td>
                     <td>{variant.avg_fold_change}</td>
                 </tr>
