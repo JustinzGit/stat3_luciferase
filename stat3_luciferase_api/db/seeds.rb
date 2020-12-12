@@ -24,7 +24,7 @@ luciferase_values = CSV.parse(File.read('./db/data/luciferase_values.csv'), head
 
 luciferase_values.each do |lv|
     ff = lv['firefly'].to_f
-    ren = lv['firefly'].to_f
+    ren = lv['renilla'].to_f
     ff_ren_ratio = ff/ren
 
     experiment = Experiment.find(lv['experiment_id'])
