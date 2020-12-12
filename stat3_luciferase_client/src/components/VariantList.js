@@ -6,7 +6,8 @@ class VariantList extends Component {
 
         this.state = {
             variantList: [],
-            foldChangeToggle: true
+            foldChangeToggle: true,
+            variantToggle: true
         }
     }
 
@@ -41,11 +42,25 @@ class VariantList extends Component {
         })
         this.setState({variantList: sortedVariantList, foldChangeToggle: !foldChangeToggle})
     }
+
+    sortByVariant = () => {
+        const variantToggle = this.state.variantToggle
+        const sortedVariantList = this.state.variantList.sort(function(a, b){
+            if (variantToggle){
+                return a.aa_position - b.aa_position
+            }
+            else {
+                return b.aa_position - a.aa_position
+            }
+        })
+        this.setState({variantList: sortedVariantList, variantToggle: !variantToggle})
+    }
     
     render(){
         return(
             <div id="variant-list">
                 <button onClick={this.sortByFoldChange}>Sort By Fold Change</button>
+                <button onClick={this.sortByVariant}>Sort By Variant</button>
                 <table>
                     <tbody>
                         <tr>
