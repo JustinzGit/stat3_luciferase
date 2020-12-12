@@ -42,5 +42,7 @@ variants.each do |v|
         avg_fold_change = fold_change_total/luciferase_values.size
         v.update(avg_fold_change: avg_fold_change)
         v.avg_fold_change.to_i > 1 ? v.update(gof: true) : v.update(gof: false)
+    else
+        v.update(avg_fold_change: 0)
     end 
 end 
