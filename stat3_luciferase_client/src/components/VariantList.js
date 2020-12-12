@@ -1,26 +1,20 @@
-import React, { Component } from "react"
+import React, { useEffect, useState } from "react"
 
-class VariantList extends Component {
-    constructor(){
-        super()
+function VariantList() {
+    const [variantList, setVariantList] = useState([])
+    const [foldChangeToggle, setFoldChangeToggle] = useState(true)
+    const [variantToggle, setVariantToggle] = useState(true)
 
-        this.state = {
-            variantList: [],
-            foldChangeToggle: true,
-            variantToggle: true
-        }
-    }
-
-    componentDidMount(){
+    useEffect(() => {
         fetch('http://localhost:3001/variants', { credentials: 'include' })
         .then(response => response.json())
         .then(variantList => {
-            this.setState({ variantList: variantList })
+            setVariantList(variantList)
         })
-    }
+    }, [])
 
-    renderVariantList = () => {
-        return this.state.variantList.map(variant => {
+    function renderVariantList(){
+        return variantList.map(variant => {
             return(
                 <tr key={variant.id}>
                     <td>{variant.protein_variant}</td>
@@ -30,9 +24,8 @@ class VariantList extends Component {
         })
     }
 
-    sortByFoldChange = () => {
-        const foldChangeToggle = this.state.foldChangeToggle
-        const sortedVariantList = this.state.variantList.sort(function(a, b){
+    function sortByFoldChange(){
+        const sortedVariantList = variantList.sort(function(a, b){
             if (foldChangeToggle){
                 return a.avg_fold_change - b.avg_fold_change
             }
@@ -40,12 +33,12 @@ class VariantList extends Component {
                 return b.avg_fold_change - a.avg_fold_change
             }
         })
-        this.setState({variantList: sortedVariantList, foldChangeToggle: !foldChangeToggle})
+        setVariantList(sortedVariantList)
+        setFoldChangeToggle(!foldChangeToggle)
     }
 
-    sortByVariant = () => {
-        const variantToggle = this.state.variantToggle
-        const sortedVariantList = this.state.variantList.sort(function(a, b){
+    function sortByVariant(){
+        const sortedVariantList = variantList.sort(function(a, b){
             if (variantToggle){
                 return a.aa_position - b.aa_position
             }
@@ -53,26 +46,25 @@ class VariantList extends Component {
                 return b.aa_position - a.aa_position
             }
         })
-        this.setState({variantList: sortedVariantList, variantToggle: !variantToggle})
+        setVariantList(sortedVariantList)
+        setVariantToggle(!variantToggle)
     }
     
-    render(){
-        return(
-            <div id="variant-list">
-                <button onClick={this.sortByFoldChange}>Sort By Fold Change</button>
-                <button onClick={this.sortByVariant}>Sort By Variant</button>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>Variant</th>
-                            <th>Fold Change</th>
-                        </tr>
-                        {this.renderVariantList()}
-                    </tbody>
-                </table>
-            </div>
-        )
-    }
+    return(
+        <div id="variant-list">
+            <button onClick={sortByFoldChange}>Sort By Fold Change</button>
+            <button onClick={sortByVariant}>Sort By Variant</button>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Variant</th>
+                        <th>Fold Change</th>
+                    </tr>
+                    {renderVariantList()}
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 export default VariantList
