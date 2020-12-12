@@ -6,4 +6,8 @@ class VariantSerializer < ActiveModel::Serializer
       VariantExperimentSerializer.new(experiment, variant: object)
     end
   end
+
+  def avg_fold_change
+    "#{'%.2f' % object.avg_fold_change}"
+  end 
 end
