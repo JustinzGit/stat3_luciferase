@@ -2,7 +2,7 @@ class VariantsController < ApplicationController
 
   # GET /variants
   def index
-    @variants = Variant.all
+    @variants = Variant.all.order(aa_position: :asc)
 
     render json: @variants
   end
