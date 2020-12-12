@@ -6,5 +6,9 @@ class VariantExperimentSerializer < ActiveModel::Serializer
       LuciferaseValueSerializer.new(luciferase_value)
     end
     luciferase_value.first
+  end
+
+  def ff_ren_ratio
+    "#{'%.2f' % object.ff_ren_ratio}".to_f
   end 
 end
