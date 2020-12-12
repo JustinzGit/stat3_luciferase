@@ -1,8 +1,13 @@
 import React, { Component } from "react"
 
 class VariantList extends Component {
-    state = {
-        variantList: []
+    constructor(){
+        super()
+
+        this.state = {
+            variantList: [],
+            foldChangeToggle: true
+        }
     }
 
     componentDidMount(){
@@ -25,11 +30,16 @@ class VariantList extends Component {
     }
 
     sortByFoldChange = () => {
+        const foldChangeToggle = this.state.foldChangeToggle
         const sortedVariantList = this.state.variantList.sort(function(a, b){
-            return a.avg_fold_change - b.avg_fold_change
+            if (foldChangeToggle){
+                return a.avg_fold_change - b.avg_fold_change
+            }
+            else {
+                return b.avg_fold_change - a.avg_fold_change
+            }
         })
-
-        this.setState({variantList: sortedVariantList})
+        this.setState({variantList: sortedVariantList, foldChangeToggle: !foldChangeToggle})
     }
     
     render(){
