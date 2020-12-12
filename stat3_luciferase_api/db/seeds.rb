@@ -30,9 +30,6 @@ luciferase_values.each do |lv|
     experiment = Experiment.find(lv['experiment_id'])
     fold_change = ff_ren_ratio/experiment.ff_ren_ratio
 
-    variant = Variant.find(lv['variant_id'])
-    fold_change > 1 ? variant.gof = true : variant.gof = false
-
     LuciferaseValue.create(firefly: ff, renilla: ren, ff_ren_ratio: ff_ren_ratio, fold_change: fold_change, 
         variant_id: lv['variant_id'], experiment_id: lv['experiment_id'])
 end
