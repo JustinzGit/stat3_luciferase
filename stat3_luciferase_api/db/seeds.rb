@@ -40,7 +40,7 @@ variants.each do |v|
     if !luciferase_values.empty?
         fold_change_total = luciferase_values.reduce(:+)
         avg_fold_change = fold_change_total/luciferase_values.size
-        v.avg_fold_change = avg_fold_change
-        v.avg_fold_change.to_i > 1 ? v.gof = true : v.gof = false
+        v.update(avg_fold_change: avg_fold_change)
+        v.avg_fold_change.to_i > 1 ? v.update(gof: true) : v.update(gof: false)
     end 
 end 
