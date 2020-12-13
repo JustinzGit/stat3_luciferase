@@ -1,6 +1,6 @@
 import { Switch, Route } from 'react-router-dom'
 
-import VariantList from './components/VariantList'
+import VariantTable from './components/VariantTable'
 import Variant from './components/Variant'
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       </Route>
 
       <Route path={'/variants'}>
-        <VariantList />
+        <VariantTable />
       </Route>
     </Switch>
   );

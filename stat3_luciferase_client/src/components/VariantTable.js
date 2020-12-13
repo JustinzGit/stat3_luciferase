@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react"
 
-function VariantList() {
-    const [variantList, setVariantList] = useState([])
+function VariantTable() {
+    const [variantTable, setVariantTable] = useState([])
     const [foldChangeToggle, setFoldChangeToggle] = useState(true)
     const [variantToggle, setVariantToggle] = useState(true)
 
     useEffect(() => {
         fetch('http://localhost:3001/variants', { credentials: 'include' })
         .then(response => response.json())
-        .then(variantList => {
-            setVariantList(variantList)
+        .then(variantTable => {
+            setVariantTable(variantTable)
         })
     }, [])
 
-    function renderVariantList(){
-        return variantList.map(variant => {
+    function renderVariantTable(){
+        return variantTable.map(variant => {
             return(
                 <tr key={variant.id}>
                     <td>{variant.protein_variant}</td>
@@ -25,7 +25,7 @@ function VariantList() {
     }
 
     function sortByFoldChange(){
-        const sortedVariantList = variantList.sort(function(a, b){
+        const sortedVariantTable = variantTable.sort(function(a, b){
             if (foldChangeToggle){
                 return a.avg_fold_change - b.avg_fold_change
             }
@@ -33,12 +33,12 @@ function VariantList() {
                 return b.avg_fold_change - a.avg_fold_change
             }
         })
-        setVariantList(sortedVariantList)
+        setVariantTable(sortedVariantTable)
         setFoldChangeToggle(!foldChangeToggle)
     }
 
     function sortByVariant(){
-        const sortedVariantList = variantList.sort(function(a, b){
+        const sortedVariantTable = variantTable.sort(function(a, b){
             if (variantToggle){
                 return a.aa_position - b.aa_position
             }
@@ -46,12 +46,12 @@ function VariantList() {
                 return b.aa_position - a.aa_position
             }
         })
-        setVariantList(sortedVariantList)
+        setVariantTable(sortedVariantTable)
         setVariantToggle(!variantToggle)
     }
     
     return(
-        <div id="variant-list">
+        <div id="variant-table">
             <button onClick={sortByFoldChange}>Sort By Fold Change</button>
             <button onClick={sortByVariant}>Sort By Variant</button>
             <table>
@@ -60,11 +60,11 @@ function VariantList() {
                         <th>Variant</th>
                         <th>Fold Change</th>
                     </tr>
-                    {renderVariantList()}
+                    {renderVariantTable()}
                 </tbody>
             </table>
         </div>
     )
 }
 
-export default VariantList
+export default VariantTable
