@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react"
+import { useHistory } from "react-router-dom"
 
 function VariantTable() {
     const [variantList, setVariantList] = useState([])
     const [foldChangeToggle, setFoldChangeToggle] = useState(true)
     const [variantToggle, setVariantToggle] = useState(true)
+    const history = useHistory()
 
     useEffect(() => {
         fetch('http://localhost:3001/variants', { credentials: 'include' })
@@ -16,7 +18,7 @@ function VariantTable() {
     function renderVariantRows(){
         return variantList.map(variant => {
             return(
-                <tr key={variant.id}>
+                <tr key={variant.id} onClick={() => history.push(`/variants/${variant.protein_variant}`)}>
                     <td>{variant.protein_variant}</td>
                     <td>{variant.avg_fold_change}</td>
                 </tr>
