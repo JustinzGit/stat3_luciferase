@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react"
 
 function VariantTable() {
-    const [variantTable, setVariantTable] = useState([])
+    const [variantList, setVariantList] = useState([])
     const [foldChangeToggle, setFoldChangeToggle] = useState(true)
     const [variantToggle, setVariantToggle] = useState(true)
 
     useEffect(() => {
         fetch('http://localhost:3001/variants', { credentials: 'include' })
         .then(response => response.json())
-        .then(variantTable => {
-            setVariantTable(variantTable)
+        .then(variantList => {
+            setVariantList(variantList)
         })
     }, [])
 
     function renderVariantRows(){
-        return variantTable.map(variant => {
+        return variantList.map(variant => {
             return(
                 <tr key={variant.id}>
                     <td>{variant.protein_variant}</td>
@@ -25,7 +25,7 @@ function VariantTable() {
     }
 
     function sortByFoldChange(){
-        const sortedVariantTable = variantTable.sort(function(a, b){
+        const sortedVariantList = variantList.sort(function(a, b){
             if (foldChangeToggle){
                 return a.avg_fold_change - b.avg_fold_change
             }
@@ -33,12 +33,12 @@ function VariantTable() {
                 return b.avg_fold_change - a.avg_fold_change
             }
         })
-        setVariantTable(sortedVariantTable)
+        setVariantList(sortedVariantList)
         setFoldChangeToggle(!foldChangeToggle)
     }
 
     function sortByVariant(){
-        const sortedVariantTable = variantTable.sort(function(a, b){
+        const sortedVariantList = variantList.sort(function(a, b){
             if (variantToggle){
                 return a.aa_position - b.aa_position
             }
@@ -46,7 +46,7 @@ function VariantTable() {
                 return b.aa_position - a.aa_position
             }
         })
-        setVariantTable(sortedVariantTable)
+        setVariantList(sortedVariantList)
         setVariantToggle(!variantToggle)
     }
     
