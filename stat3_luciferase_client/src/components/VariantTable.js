@@ -13,7 +13,7 @@ function VariantTable() {
         })
     }, [])
 
-    function renderVariantTable(){
+    function renderVariantRows(){
         return variantTable.map(variant => {
             return(
                 <tr key={variant.id}>
@@ -60,7 +60,7 @@ function VariantTable() {
                         <th>Variant</th>
                         <th>Fold Change</th>
                     </tr>
-                    {renderVariantTable()}
+                    {renderVariantRows()}
                 </tbody>
             </table>
         </div>
