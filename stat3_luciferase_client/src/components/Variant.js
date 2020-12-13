@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react"
 import { useParams } from 'react-router-dom'
 
 import Experiment from './Experiment'
+import Navigation from './Navigation'
 
 function Variant() {
     const { protein_variant } = useParams()
@@ -18,6 +19,7 @@ function Variant() {
 
     return(
         <div>
+            <Navigation />
            <p>Protien Variant: {variant.protein_variant}</p>
            <p>Average Fold Change: {variant.avg_fold_change}</p>
            <p>GOF? {variant.gof ? "Yes" : "No"}</p>
