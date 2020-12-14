@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
+import Navigation from './Navigation'
 
 function VariantTable() {
     const [variantList, setVariantList] = useState([])
@@ -54,6 +55,7 @@ function VariantTable() {
     
     return(
         <div id="variant-table">
+            <Navigation variants={variantList}/>
             <button onClick={sortByFoldChange}>Sort By Fold Change</button>
             <button onClick={sortByVariant}>Sort By Variant</button>
             <table>
