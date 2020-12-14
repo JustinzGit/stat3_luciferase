@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useHistory } from "react-router-dom"
 import Navigation from './Navigation'
+import useVariantList from '../hooks/useVariantList'
 
 function VariantTable() {
-    const [variantList, setVariantList] = useState([])
+    const [ variantList, setVariantList ] = useVariantList()
     const [foldChangeToggle, setFoldChangeToggle] = useState(true)
     const [variantToggle, setVariantToggle] = useState(true)
     const history = useHistory()
-
-    useEffect(() => {
-        fetch('http://localhost:3001/variants', { credentials: 'include' })
-        .then(response => response.json())
-        .then(variantList => {
-            setVariantList(variantList)
-        })
-    }, [])
 
     function renderVariantRows(){
         return variantList.map(variant => {
