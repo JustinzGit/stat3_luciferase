@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom'
 
-function Navigation({ variants }) {
+function Navigation({ variants, currentPath }) {
     const [selectedVariant, setSelectedVariant] = useState("")
     const history = useHistory()
 
@@ -12,7 +12,7 @@ function Navigation({ variants }) {
 
     return(
         <div id="navigation">
-            <NavLink to="/variants">Variant Table</NavLink>
+            {currentPath !== "/variants" && <NavLink to="/variants">Variant Table</NavLink>}
 
             <form onSubmit={goToVariant}>
                 <input onChange={event => setSelectedVariant(event.target.value)} list="variants" id="variant-selection" autoComplete="off" />
