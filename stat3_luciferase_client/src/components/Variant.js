@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import useVariantList from '../hooks/useVariantList'
 import Experiment from './Experiment'
 import Navigation from './Navigation'
 
 function Variant() {
+    const location = useLocation()
     const [variantList] = useVariantList()
     const { protein_variant } = useParams()
     const [variant, setVariant] = useState({ experiments: [] })
@@ -19,7 +20,7 @@ function Variant() {
 
     return(
         <div>
-            <Navigation variants={variantList}/>
+           <Navigation currentPath={location.pathname} variants={variantList}/>
            <p>Protien Variant: {variant.protein_variant}</p>
            <p>Average Fold Change: {variant.avg_fold_change}</p>
            <p>GOF? {variant.gof ? "Yes" : "No"}</p>
