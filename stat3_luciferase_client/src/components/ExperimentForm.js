@@ -21,6 +21,7 @@ function ExperimentForm(){
         // eslint-disable-next-line
     }, [])
 
+    // Set luciferase values on form change
     function handleFormChange(event){
         const plasmidEntry = event.target.name
         const luciferaseValue = event.target.value
@@ -31,6 +32,7 @@ function ExperimentForm(){
 
     }
 
+    // Adds inputs for a mutation and associated luciferase values
     function addMutationInput(){
         setMutationCount(mutationCount + 1)
         setMutationInput([
@@ -54,7 +56,7 @@ function ExperimentForm(){
             <form>
                 <h3>Add Experiment</h3>
                 <p>Date: <input value={date} type="date" onChange={event => setDate(event.target.value)}/></p>
-            
+
                 <p>WT Firefly: <input onChange={handleFormChange} type="number" name="wt_firefly" /></p>
                 <p>WT Renilla: <input onChange={handleFormChange} type="number" name="wt_renilla" /></p>
                 <p><input onClick={addMutationInput} type="button" value="Add Mutation"/></p>
