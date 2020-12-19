@@ -35,7 +35,7 @@ function ExperimentForm(){
         setMutationCount(mutationCount + 1)
         setMutationInput([
             ...mutationInput,
-            <div>
+            <div key={`variant_${mutationCount}`} id={`variant_${mutationCount}`}>
                 Mutation:<br/>
                 <input list="variants" onChange={handleFormChange} name={`variant_${mutationCount}`} autoComplete="off" />
                 <datalist id="variants">
@@ -50,7 +50,7 @@ function ExperimentForm(){
     }
 
     return(
-        <div>
+        <div id="experiment_form">
             <form>
                 <h3>Add Experiment</h3>
                 <p>Date: <input value={date} type="date"/></p>
@@ -58,8 +58,8 @@ function ExperimentForm(){
                 <p>WT Firefly: <input onChange={handleFormChange} type="number" name="wt_firefly" /></p>
                 <p>WT Renilla: <input onChange={handleFormChange} type="number" name="wt_renilla" /></p>
                 <p><input onClick={addMutationInput} type="button" value="Add Mutation"/></p>
-                {mutationInput.map(input => input)}
-                <input type="submit" />
+                {[...mutationInput]}
+                <input type="submit" value="Add Experiment" />
             </form>
         </div>
     )
