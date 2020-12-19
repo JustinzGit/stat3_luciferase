@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import useVariantList from '../hooks/useVariantList'
 
 function ExperimentForm(){
-    const [date, setDate] = useState()
+    const [date, setDate] = useState('')
     const [variants] = useVariantList()
     const [luciferaseValues, setLuciferaseValues] = useState({})
 
@@ -53,7 +53,7 @@ function ExperimentForm(){
         <div id="experiment_form">
             <form>
                 <h3>Add Experiment</h3>
-                <p>Date: <input value={date} type="date"/></p>
+                <p>Date: <input value={date} type="date" onChange={event => setDate(event.target.value)}/></p>
             
                 <p>WT Firefly: <input onChange={handleFormChange} type="number" name="wt_firefly" /></p>
                 <p>WT Renilla: <input onChange={handleFormChange} type="number" name="wt_renilla" /></p>
