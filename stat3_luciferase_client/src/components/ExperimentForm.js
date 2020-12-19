@@ -9,6 +9,7 @@ function ExperimentForm(){
     const [mutationCount, setMutationCount] = useState(1)
     const [mutationInput, setMutationInput] = useState([])
    
+    // On render, set todays date and add input for a single mutation
     useEffect(() => {
         let dateObj = new Date()
         let day = String(dateObj.getDate()).padStart(2, '0')
@@ -16,6 +17,8 @@ function ExperimentForm(){
         let year = dateObj.getFullYear();
         let todaysDate = year + '-' + month + '-' + day
         setDate(todaysDate)
+        addMutationInput()
+        // eslint-disable-next-line
     }, [])
 
     function handleFormChange(event){
