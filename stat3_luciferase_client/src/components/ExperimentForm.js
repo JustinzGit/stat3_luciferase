@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react'
+import useVariantList from '../hooks/useVariantList'
 
 function ExperimentForm(){
     const [date, setDate] = useState()
+    const [variants] = useVariantList()
     const [luciferaseValues, setLuciferaseValues] = useState({})
+
+    const [mutationCount, setMutationCount] = useState(1)
+    const [mutationInput, setMutationInput] = useState([])
    
     useEffect(() => {
         let dateObj = new Date()
@@ -23,6 +28,24 @@ function ExperimentForm(){
 
     }
 
+    function addMutationInput(){
+        setMutationCount(mutationCount + 1)
+        setMutationInput([
+            ...mutationInput,
+            <div>
+                Mutation:<br/>
+                <input list="variants" onChange={handleFormChange} name={`variant_${mutationCount}`} autoComplete="off" />
+                <datalist id="variants">
+                    {variants.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
+                </datalist>
+
+                <p>Firefly: <input onChange={handleFormChange} type="number" name={`firefly_${mutationCount}`} /></p>
+                <p>Renilla: <input onChange={handleFormChange} type="number" name={`renilla_${mutationCount}`} /></p>
+            </div>
+        ]
+        )
+    }
+
     return(
         <div>
             <form>
@@ -31,9 +54,8 @@ function ExperimentForm(){
             
                 <p>WT Firefly: <input onChange={handleFormChange} type="number" name="wt_firefly" /></p>
                 <p>WT Renilla: <input onChange={handleFormChange} type="number" name="wt_renilla" /></p>
-                <p>Firefly: {luciferaseValues.wt_firefly}</p>
-                <p>Renilla: {luciferaseValues.wt_renilla}</p>
-
+                <p><input onClick={addMutationInput} type="button" value="Add Mutation"/></p>
+                {mutationInput.map(input => input)}
                 <input type="submit" />
             </form>
         </div>
