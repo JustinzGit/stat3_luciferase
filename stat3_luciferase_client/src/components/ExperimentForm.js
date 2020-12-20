@@ -9,7 +9,7 @@ function ExperimentForm(){
     const [mutationCount, setMutationCount] = useState(1)
     const [mutationInput, setMutationInput] = useState([])
    
-    // On render, set todays date and add input for a single mutation
+    // On render, set todays date and add inputs for a single mutation
     useEffect(() => {
         let dateObj = new Date()
         let day = String(dateObj.getDate()).padStart(2, '0')
@@ -17,38 +17,32 @@ function ExperimentForm(){
         let year = dateObj.getFullYear();
         let todaysDate = year + '-' + month + '-' + day
         setDate(todaysDate)
-        addMutationInput()
-        // eslint-disable-next-line
-    }, [])
+        setMutationInput([mutationHTML])
+        // eslint-disable-next-line 
+    }, [variants])
 
     // Set luciferase values on form change
     function handleFormChange(event){
         const plasmidEntry = event.target.name
         const luciferaseValue = event.target.value
-        setLuciferaseValues({
-            ...luciferaseValues, 
-            [plasmidEntry]: luciferaseValue
-        })
-
+        setLuciferaseValues({...luciferaseValues, [plasmidEntry]: luciferaseValue})
     }
+
+    const mutationHTML = 
+        <div key={`variant_${mutationCount}`} id={`variant_${mutationCount}`}>
+            Mutation:<br/><input list="variants" onChange={handleFormChange} name={`variant_${mutationCount}`} autoComplete="off" />
+            <datalist id="variants">
+                {variants.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
+            </datalist>
+
+            <p>Firefly: <input onChange={handleFormChange} type="number" name={`firefly_${mutationCount}`} /></p>
+            <p>Renilla: <input onChange={handleFormChange} type="number" name={`renilla_${mutationCount}`} /></p>
+        </div>
 
     // Adds inputs for a mutation and associated luciferase values
     function addMutationInput(){
         setMutationCount(mutationCount + 1)
-        setMutationInput([
-            ...mutationInput,
-            <div key={`variant_${mutationCount}`} id={`variant_${mutationCount}`}>
-                Mutation:<br/>
-                <input list="variants" onChange={handleFormChange} name={`variant_${mutationCount}`} autoComplete="off" />
-                <datalist id="variants">
-                    {variants.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
-                </datalist>
-
-                <p>Firefly: <input onChange={handleFormChange} type="number" name={`firefly_${mutationCount}`} /></p>
-                <p>Renilla: <input onChange={handleFormChange} type="number" name={`renilla_${mutationCount}`} /></p>
-            </div>
-        ]
-        )
+        setMutationInput([...mutationInput, mutationHTML])
     }
 
     return(
@@ -59,8 +53,10 @@ function ExperimentForm(){
 
                 <p>WT Firefly: <input onChange={handleFormChange} type="number" name="wt_firefly" /></p>
                 <p>WT Renilla: <input onChange={handleFormChange} type="number" name="wt_renilla" /></p>
+                
                 <p><input onClick={addMutationInput} type="button" value="Add Mutation"/></p>
                 {[...mutationInput]}
+            
                 <input type="submit" value="Add Experiment" />
             </form>
         </div>
