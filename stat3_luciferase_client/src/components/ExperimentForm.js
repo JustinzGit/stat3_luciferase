@@ -17,7 +17,7 @@ function ExperimentForm(){
         setDate(todaysDate)
     }, [])
 
-    const mutationHTML = 
+    const mutationInput = 
         <div key={`variant_${mutationCount}`} id={`variant_${mutationCount}`}>
             Mutation:<br/><input list="variants" onChange={handleFormChange} name={`variant_${mutationCount}`} autoComplete="off" />
             <datalist id="variants">
@@ -30,9 +30,10 @@ function ExperimentForm(){
 
     // On mount, render inputs for a mutation and luciferase values
     // Render inputs for additional mutation when mutationCount is updated
-    const [mutationInput, setMutationInput] = useState([])
+    const [mutationInputs, setMutationInputs] = useState([])
     useEffect(() => {
-        setMutationInput([...mutationInput, mutationHTML])
+        setMutationInputs([...mutationInputs, mutationInput])
+        // eslint-disable-next-line
     }, [mutationCount])
 
     // Set mutation luciferase values on form change
@@ -52,7 +53,7 @@ function ExperimentForm(){
                 <p>WT Renilla: <input onChange={handleFormChange} type="number" name="wt_renilla" /></p>
                 
                 <p><input onClick={() => setMutationCount(mutationCount + 1)} type="button" value="Add Mutation"/></p>
-                {[...mutationInput]}
+                {[...mutationInputs]}
             
                 <input type="submit" value="Add Experiment" />
             </form>
