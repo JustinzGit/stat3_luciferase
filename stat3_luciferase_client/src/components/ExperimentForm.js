@@ -32,9 +32,11 @@ function ExperimentForm(){
     // Render inputs for additional mutation when mutationCount is updated
     const [mutationInputs, setMutationInputs] = useState([])
     useEffect(() => {
-        setMutationInputs([...mutationInputs, mutationInput])
+        if (variants.length !== 0){
+            setMutationInputs([...mutationInputs, mutationInput])
+        }
         // eslint-disable-next-line
-    }, [mutationCount])
+    }, [mutationCount, variants])
 
     // Set mutation luciferase values on form change
     function handleFormChange(event){
