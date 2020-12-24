@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react'
 import useVariantList from '../hooks/useVariantList'
 
 function ExperimentForm(){
-    const [date, setDate] = useState('')
     const [variants] = useVariantList()
     const [luciferaseValues, setLuciferaseValues] = useState({})
 
     const [mutationCount, setMutationCount] = useState(1)
     const [mutationInput, setMutationInput] = useState([])
    
-    // On render, set todays date and add inputs for a single mutation
+    // On mount, render todays date
+    const [date, setDate] = useState('')
     useEffect(() => {
         let dateObj = new Date()
         let day = String(dateObj.getDate()).padStart(2, '0')
@@ -17,16 +17,7 @@ function ExperimentForm(){
         let year = dateObj.getFullYear();
         let todaysDate = year + '-' + month + '-' + day
         setDate(todaysDate)
-        setMutationInput([mutationHTML])
-        // eslint-disable-next-line 
-    }, [variants])
-
-    // Set luciferase values on form change
-    function handleFormChange(event){
-        const plasmidEntry = event.target.name
-        const luciferaseValue = event.target.value
-        setLuciferaseValues({...luciferaseValues, [plasmidEntry]: luciferaseValue})
-    }
+    }, [])
 
     const mutationHTML = 
         <div key={`variant_${mutationCount}`} id={`variant_${mutationCount}`}>
@@ -39,10 +30,22 @@ function ExperimentForm(){
             <p>Renilla: <input onChange={handleFormChange} type="number" name={`renilla_${mutationCount}`} /></p>
         </div>
 
+    // On mount, render inputs for a mutation and luciferase values
+    // Render inputs for additional mutation when mutationCount is updated
+    useEffect(() => {
+        setMutationInput([...mutationInput, mutationHTML])
+    }, [mutationCount])
+
+    // Set luciferase values on form change
+    function handleFormChange(event){
+        const plasmidEntry = event.target.name
+        const luciferaseValue = event.target.value
+        setLuciferaseValues({...luciferaseValues, [plasmidEntry]: luciferaseValue})
+    }
+
     // Adds inputs for a mutation and associated luciferase values
     function addMutationInput(){
         setMutationCount(mutationCount + 1)
-        setMutationInput([...mutationInput, mutationHTML])
     }
 
     return(
