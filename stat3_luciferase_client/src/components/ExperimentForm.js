@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import useVariantList from '../hooks/useVariantList'
 
 function ExperimentForm(){
-    const [variants] = useVariantList()
+    const [variantList] = useVariantList()
     const [luciferaseValues, setLuciferaseValues] = useState({})
     const [mutationCount, setMutationCount] = useState(1)
     
@@ -21,7 +21,7 @@ function ExperimentForm(){
         <div key={`variant_${mutationCount}`} id={`variant_${mutationCount}`}>
             Mutation:<br/><input list="variants" onChange={handleFormChange} name={`variant_${mutationCount}`} autoComplete="off" />
             <datalist id="variants">
-                {variants.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
+                {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
             </datalist>
 
             <p>Firefly: <input onChange={handleFormChange} type="number" name={`firefly_${mutationCount}`} /></p>
@@ -32,11 +32,11 @@ function ExperimentForm(){
     // Render inputs for additional mutation when mutationCount is updated
     const [mutationInputs, setMutationInputs] = useState([])
     useEffect(() => {
-        if (variants.length !== 0){
+        if (variantList.length !== 0){
             setMutationInputs([...mutationInputs, mutationInput])
         }
         // eslint-disable-next-line
-    }, [mutationCount, variants])
+    }, [mutationCount, variantList])
 
     // Set mutation luciferase values on form change
     function handleFormChange(event){
