@@ -4,10 +4,8 @@ import useVariantList from '../hooks/useVariantList'
 function ExperimentForm(){
     const [variants] = useVariantList()
     const [luciferaseValues, setLuciferaseValues] = useState({})
-
     const [mutationCount, setMutationCount] = useState(1)
-    const [mutationInput, setMutationInput] = useState([])
-   
+    
     // On mount, render todays date
     const [date, setDate] = useState('')
     useEffect(() => {
@@ -32,20 +30,16 @@ function ExperimentForm(){
 
     // On mount, render inputs for a mutation and luciferase values
     // Render inputs for additional mutation when mutationCount is updated
+    const [mutationInput, setMutationInput] = useState([])
     useEffect(() => {
         setMutationInput([...mutationInput, mutationHTML])
     }, [mutationCount])
 
-    // Set luciferase values on form change
+    // Set mutation luciferase values on form change
     function handleFormChange(event){
         const plasmidEntry = event.target.name
         const luciferaseValue = event.target.value
         setLuciferaseValues({...luciferaseValues, [plasmidEntry]: luciferaseValue})
-    }
-
-    // Adds inputs for a mutation and associated luciferase values
-    function addMutationInput(){
-        setMutationCount(mutationCount + 1)
     }
 
     return(
@@ -57,7 +51,7 @@ function ExperimentForm(){
                 <p>WT Firefly: <input onChange={handleFormChange} type="number" name="wt_firefly" /></p>
                 <p>WT Renilla: <input onChange={handleFormChange} type="number" name="wt_renilla" /></p>
                 
-                <p><input onClick={addMutationInput} type="button" value="Add Mutation"/></p>
+                <p><input onClick={() => setMutationCount(mutationCount + 1)} type="button" value="Add Mutation"/></p>
                 {[...mutationInput]}
             
                 <input type="submit" value="Add Experiment" />
