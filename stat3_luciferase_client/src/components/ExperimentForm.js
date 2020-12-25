@@ -15,6 +15,11 @@ function ExperimentForm(){
 
     const blankLuciferaseValues = {mutation: '', firefly: '', renilla: ''}
     const [luciferaseValues, setLuciferaseValues] = useState([{...blankLuciferaseValues}])
+    function handleMutationChange(event){
+        const updatedMutationValues = [...luciferaseValues]
+        updatedMutationValues[event.target.dataset.idx][event.target.className] = event.target.value
+        setLuciferaseValues(updatedMutationValues)
+    }
     
     // On mount, render todays date
     const [date, setDate] = useState('')
@@ -26,34 +31,6 @@ function ExperimentForm(){
         let todaysDate = year + '-' + month + '-' + day
         setDate(todaysDate)
     }, [])
-
-    // const mutationInput = 
-    //     <div key={`variant_${mutationCount}`} id={`variant_${mutationCount}`}>
-    //         Mutation:<br/><input list="variants" onChange={handleFormChange} name={`variant_${mutationCount}`} autoComplete="off" />
-    //         <datalist id="variants">
-    //             {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
-    //         </datalist>
-
-    //         <p>Firefly: <input onChange={handleFormChange} type="number" name={`firefly_${mutationCount}`} /></p>
-    //         <p>Renilla: <input onChange={handleFormChange} type="number" name={`renilla_${mutationCount}`} /></p>
-    //     </div>
-
-    // On mount, render inputs for a mutation and luciferase values
-    // Render inputs for additional mutation when mutationCount is updated
-    // const [mutationInputs, setMutationInputs] = useState([])
-    // useEffect(() => {
-    //     if (variantList.length !== 0){
-    //         setMutationInputs([...mutationInputs, mutationInput])
-    //     }
-    //     // eslint-disable-next-line
-    // }, [mutationCount, variantList])
-
-    // Set mutation luciferase values on form change
-    // function handleFormChange(event){
-    //     const plasmidEntry = event.target.name
-    //     const luciferaseValue = event.target.value
-    //     setLuciferaseValues({...luciferaseValues, [plasmidEntry]: luciferaseValue})
-    // }
 
     function addMutation(){
         setLuciferaseValues([...luciferaseValues, {...blankLuciferaseValues}])
@@ -78,13 +55,13 @@ function ExperimentForm(){
                         return(
                             <div key={`mutation_${mutationId}`}>
                                 Mutation:<br/>
-                                <input list="variants" name={mutationId} autoComplete="off" />
+                                <input list="variants" name={mutationId} data-idx={index} value={luciferaseValues[index].mutation} onChange={handleMutationChange} className="mutation" autoComplete="off" />
                                 <datalist id="variants">
                                     {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
                                 </datalist>
 
-                                <p>Firefly: <input type="number" name={fireflyId} /></p>
-                                <p>Renilla: <input type="number" name={renillaId} /></p>
+                                <p>Firefly: <input type="number" name={fireflyId} data-idx={index} value={luciferaseValues[index].firefly} onChange={handleMutationChange} className="firefly" /></p>
+                                <p>Renilla: <input type="number" name={renillaId} data-idx={index} value={luciferaseValues[index].renilla} onChange={handleMutationChange} className="renilla" /></p>
                             </div>
                         )
                     })
