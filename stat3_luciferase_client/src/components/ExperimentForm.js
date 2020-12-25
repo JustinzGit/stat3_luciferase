@@ -3,7 +3,16 @@ import useVariantList from '../hooks/useVariantList'
 
 function ExperimentForm(){
     const [variantList] = useVariantList()
-    
+
+    const [wtValues, setWtValues] = useState({ wt_firefly: '', wt_renilla: ''})
+    function handleWtChange(event){
+        setWtValues({
+            ...wtValues,
+            [event.target.name]: [event.target.value]
+        })
+    }
+
+
     const blankLuciferaseValues = {mutation: '', firefly: '', renilla: ''}
     const [luciferaseValues, setLuciferaseValues] = useState([{...blankLuciferaseValues}])
     
@@ -56,8 +65,8 @@ function ExperimentForm(){
                 <h3>Add Experiment</h3>
                 <p>Date: <input value={date} type="date" onChange={event => setDate(event.target.value)}/></p>
 
-                <p>WT Firefly: <input  type="number" name="wt_firefly" /></p>
-                <p>WT Renilla: <input  type="number" name="wt_renilla" /></p>
+                <p>WT Firefly: <input onChange={handleWtChange} value={wtValues.wt_firefly} type="number" name="wt_firefly" /></p>
+                <p>WT Renilla: <input onChange={handleWtChange} value={wtValues.wt_renilla} type="number" name="wt_renilla" /></p>
                 
                 <p><input onClick={addMutation} type="button" value="Add Mutation"/></p>
                 {
