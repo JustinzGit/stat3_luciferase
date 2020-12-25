@@ -4,9 +4,9 @@ import useVariantList from '../hooks/useVariantList'
 function ExperimentForm(){
     const [variantList] = useVariantList()
     const [mutationCount, setMutationCount] = useState(1)
-    const [luciferaseValues, setLuciferaseValues] = useState([
-        {mutation: '', firefly: '', renilla: ''}
-    ])
+    
+    const blankLuciferaseValues = {mutation: '', firefly: '', renilla: ''}
+    const [luciferaseValues, setLuciferaseValues] = useState([{...blankLuciferaseValues}])
     
     // On mount, render todays date
     const [date, setDate] = useState('')
@@ -46,6 +46,10 @@ function ExperimentForm(){
     //     const luciferaseValue = event.target.value
     //     setLuciferaseValues({...luciferaseValues, [plasmidEntry]: luciferaseValue})
     // }
+
+    function addMutation(){
+        setLuciferaseValues([...luciferaseValues, {...blankLuciferaseValues}])
+    }
 
     return(
         <div id="experiment_form">
