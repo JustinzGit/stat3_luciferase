@@ -24,7 +24,7 @@ function ExperimentForm(){
     const [mtValues, setMtValues] = useState([{...blankMtEntry}])
     function handleMtChange(event){
         const updatedMtValues = [...mtValues]
-        updatedMtValues[event.target.dataset.idx][event.target.className] = event.target.value
+        updatedMtValues[event.target.dataset.index][event.target.className] = event.target.value
         setMtValues(updatedMtValues)
     }
     
@@ -50,23 +50,43 @@ function ExperimentForm(){
                 <p><input onClick={addMutation} type="button" value="Add Mutation"/></p>
                 {
                     mtValues.map((values, index) => {
-                        const mutationId = `variant_${index}`
-
                         return(
-                            <div key={`mutation_${mutationId}`}>
+                            <div key={`mutation_${index}`} id={`mutation_${index}`}>
+                                
                                 Mutation:<br/>
-                                <input list="variants" data-idx={index} value={mtValues[index].mutation} onChange={handleMtChange} className="mutation" autoComplete="off" />
+                                <input list="variants" 
+                                    data-index={index} 
+                                    value={mtValues[index].mutation} 
+                                    onChange={handleMtChange} 
+                                    className="mutation" 
+                                    autoComplete="off" />
+                                
                                 <datalist id="variants">
-                                    {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
+                                    {
+                                        variantList.map((variant) => 
+                                            <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)
+                                    }
                                 </datalist>
 
-                                <p>Firefly: <input type="number" data-idx={index} value={mtValues[index].firefly} onChange={handleMtChange} className="firefly" /></p>
-                                <p>Renilla: <input type="number" data-idx={index} value={mtValues[index].renilla} onChange={handleMtChange} className="renilla" /></p>
+                                <p>Firefly: 
+                                <input 
+                                    type="number" 
+                                    data-index={index} 
+                                    className="firefly"
+                                    onChange={handleMtChange} 
+                                    value={mtValues[index].firefly} /></p>
+
+                                <p>Renilla: 
+                                <input 
+                                    type="number" 
+                                    data-index={index}
+                                    className="renilla"
+                                    onChange={handleMtChange} 
+                                    value={mtValues[index].renilla} /></p>
                             </div>
                         )
                     })
                 }
-
                 <input type="submit" value="Add Experiment" />
             </form>
         </div>
