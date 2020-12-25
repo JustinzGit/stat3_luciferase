@@ -3,7 +3,6 @@ import useVariantList from '../hooks/useVariantList'
 
 function ExperimentForm(){
     const [variantList] = useVariantList()
-    const [mutationCount, setMutationCount] = useState(1)
     
     const blankLuciferaseValues = {mutation: '', firefly: '', renilla: ''}
     const [luciferaseValues, setLuciferaseValues] = useState([{...blankLuciferaseValues}])
@@ -60,7 +59,7 @@ function ExperimentForm(){
                 <p>WT Firefly: <input  type="number" name="wt_firefly" /></p>
                 <p>WT Renilla: <input  type="number" name="wt_renilla" /></p>
                 
-                <p><input onClick={() => setMutationCount(mutationCount + 1)} type="button" value="Add Mutation"/></p>
+                <p><input onClick={addMutation} type="button" value="Add Mutation"/></p>
                 {
                     luciferaseValues.map((values, index) => {
                         const mutationId = `variant_${index}`
