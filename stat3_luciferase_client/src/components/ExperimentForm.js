@@ -4,23 +4,6 @@ import useVariantList from '../hooks/useVariantList'
 function ExperimentForm(){
     const [variantList] = useVariantList()
 
-    const [wtValues, setWtValues] = useState({ wt_firefly: '', wt_renilla: ''})
-    function handleWtChange(event){
-        setWtValues({
-            ...wtValues,
-            [event.target.name]: event.target.value
-        })
-    }
-
-
-    const blankMtEntry = {mutation: '', firefly: '', renilla: ''}
-    const [mtValues, setMtValues] = useState([{...blankMtEntry}])
-    function handleMtChange(event){
-        const updatedMtValues = [...mtValues]
-        updatedMtValues[event.target.dataset.idx][event.target.className] = event.target.value
-        setMtValues(updatedMtValues)
-    }
-    
     // On mount, render todays date
     const [date, setDate] = useState('')
     useEffect(() => {
@@ -32,6 +15,19 @@ function ExperimentForm(){
         setDate(todaysDate)
     }, [])
 
+    const [wtValues, setWtValues] = useState({ wt_firefly: '', wt_renilla: ''})
+    function handleWtChange(event){
+        setWtValues({...wtValues, [event.target.name]: event.target.value})
+    }
+
+    const blankMtEntry = {mutation: '', firefly: '', renilla: ''}
+    const [mtValues, setMtValues] = useState([{...blankMtEntry}])
+    function handleMtChange(event){
+        const updatedMtValues = [...mtValues]
+        updatedMtValues[event.target.dataset.idx][event.target.className] = event.target.value
+        setMtValues(updatedMtValues)
+    }
+    
     function addMutation(){
         setMtValues([...mtValues, {...blankMtEntry}])
     }
@@ -55,19 +51,17 @@ function ExperimentForm(){
                 {
                     mtValues.map((values, index) => {
                         const mutationId = `variant_${index}`
-                        const fireflyId = `firefly_${index}`
-                        const renillaId = `renilla_${index}`
 
                         return(
                             <div key={`mutation_${mutationId}`}>
                                 Mutation:<br/>
-                                <input list="variants" name={mutationId} data-idx={index} value={mtValues[index].mutation} onChange={handleMtChange} className="mutation" autoComplete="off" />
+                                <input list="variants" data-idx={index} value={mtValues[index].mutation} onChange={handleMtChange} className="mutation" autoComplete="off" />
                                 <datalist id="variants">
                                     {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
                                 </datalist>
 
-                                <p>Firefly: <input type="number" name={fireflyId} data-idx={index} value={mtValues[index].firefly} onChange={handleMtChange} className="firefly" /></p>
-                                <p>Renilla: <input type="number" name={renillaId} data-idx={index} value={mtValues[index].renilla} onChange={handleMtChange} className="renilla" /></p>
+                                <p>Firefly: <input type="number" data-idx={index} value={mtValues[index].firefly} onChange={handleMtChange} className="firefly" /></p>
+                                <p>Renilla: <input type="number" data-idx={index} value={mtValues[index].renilla} onChange={handleMtChange} className="renilla" /></p>
                             </div>
                         )
                     })
