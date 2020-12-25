@@ -8,17 +8,17 @@ function ExperimentForm(){
     function handleWtChange(event){
         setWtValues({
             ...wtValues,
-            [event.target.name]: [event.target.value]
+            [event.target.name]: event.target.value
         })
     }
 
 
-    const blankLuciferaseValues = {mutation: '', firefly: '', renilla: ''}
-    const [luciferaseValues, setLuciferaseValues] = useState([{...blankLuciferaseValues}])
-    function handleMutationChange(event){
-        const updatedMutationValues = [...luciferaseValues]
-        updatedMutationValues[event.target.dataset.idx][event.target.className] = event.target.value
-        setLuciferaseValues(updatedMutationValues)
+    const blankMtEntry = {mutation: '', firefly: '', renilla: ''}
+    const [mtValues, setMtValues] = useState([{...blankMtEntry}])
+    function handleMtChange(event){
+        const updatedMtValues = [...mtValues]
+        updatedMtValues[event.target.dataset.idx][event.target.className] = event.target.value
+        setMtValues(updatedMtValues)
     }
     
     // On mount, render todays date
@@ -33,12 +33,18 @@ function ExperimentForm(){
     }, [])
 
     function addMutation(){
-        setLuciferaseValues([...luciferaseValues, {...blankLuciferaseValues}])
+        setMtValues([...mtValues, {...blankMtEntry}])
+    }
+
+    function handleSubmit(event){
+        event.preventDefault()
+        console.log(wtValues)
+        console.log(mtValues)
     }
 
     return(
         <div id="experiment_form">
-            <form>
+            <form onSubmit={handleSubmit}>
                 <h3>Add Experiment</h3>
                 <p>Date: <input value={date} type="date" onChange={event => setDate(event.target.value)}/></p>
 
@@ -47,7 +53,7 @@ function ExperimentForm(){
                 
                 <p><input onClick={addMutation} type="button" value="Add Mutation"/></p>
                 {
-                    luciferaseValues.map((values, index) => {
+                    mtValues.map((values, index) => {
                         const mutationId = `variant_${index}`
                         const fireflyId = `firefly_${index}`
                         const renillaId = `renilla_${index}`
@@ -55,13 +61,13 @@ function ExperimentForm(){
                         return(
                             <div key={`mutation_${mutationId}`}>
                                 Mutation:<br/>
-                                <input list="variants" name={mutationId} data-idx={index} value={luciferaseValues[index].mutation} onChange={handleMutationChange} className="mutation" autoComplete="off" />
+                                <input list="variants" name={mutationId} data-idx={index} value={mtValues[index].mutation} onChange={handleMtChange} className="mutation" autoComplete="off" />
                                 <datalist id="variants">
                                     {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)}
                                 </datalist>
 
-                                <p>Firefly: <input type="number" name={fireflyId} data-idx={index} value={luciferaseValues[index].firefly} onChange={handleMutationChange} className="firefly" /></p>
-                                <p>Renilla: <input type="number" name={renillaId} data-idx={index} value={luciferaseValues[index].renilla} onChange={handleMutationChange} className="renilla" /></p>
+                                <p>Firefly: <input type="number" name={fireflyId} data-idx={index} value={mtValues[index].firefly} onChange={handleMtChange} className="firefly" /></p>
+                                <p>Renilla: <input type="number" name={renillaId} data-idx={index} value={mtValues[index].renilla} onChange={handleMtChange} className="renilla" /></p>
                             </div>
                         )
                     })
