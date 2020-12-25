@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import useVariantList from '../hooks/useVariantList'
+import MutationInputs from './MutationInputs'
 
 function ExperimentForm(){
     const [variantList] = useVariantList()
@@ -15,11 +16,13 @@ function ExperimentForm(){
         setDate(todaysDate)
     }, [])
 
+    // Handle state for WT luciferase values
     const [wtValues, setWtValues] = useState({ wt_firefly: '', wt_renilla: ''})
     function handleWtChange(event){
         setWtValues({...wtValues, [event.target.name]: event.target.value})
     }
 
+    // Handle state for MT luciferase values
     const blankMtEntry = {mutation: '', firefly: '', renilla: ''}
     const [mtValues, setMtValues] = useState([{...blankMtEntry}])
     function handleMtChange(event){
@@ -28,12 +31,14 @@ function ExperimentForm(){
         setMtValues(updatedMtValues)
     }
     
+    // Add blank entries to mtValues  
     function addMutation(){
         setMtValues([...mtValues, {...blankMtEntry}])
     }
 
     function handleSubmit(event){
         event.preventDefault()
+        console.log(date)
         console.log(wtValues)
         console.log(mtValues)
     }
@@ -49,43 +54,14 @@ function ExperimentForm(){
                 
                 <p><input onClick={addMutation} type="button" value="Add Mutation"/></p>
                 {
-                    mtValues.map((values, index) => {
-                        return(
-                            <div key={`mutation_${index}`} id={`mutation_${index}`}>
-                                
-                                Mutation:<br/>
-                                <input list="variants" 
-                                    data-index={index} 
-                                    value={mtValues[index].mutation} 
-                                    onChange={handleMtChange} 
-                                    className="mutation" 
-                                    autoComplete="off" />
-                                
-                                <datalist id="variants">
-                                    {
-                                        variantList.map((variant) => 
-                                            <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)
-                                    }
-                                </datalist>
-
-                                <p>Firefly: 
-                                <input 
-                                    type="number" 
-                                    data-index={index} 
-                                    className="firefly"
-                                    onChange={handleMtChange} 
-                                    value={mtValues[index].firefly} /></p>
-
-                                <p>Renilla: 
-                                <input 
-                                    type="number" 
-                                    data-index={index}
-                                    className="renilla"
-                                    onChange={handleMtChange} 
-                                    value={mtValues[index].renilla} /></p>
-                            </div>
-                        )
-                    })
+                    mtValues.map((values, index) => (
+                        <MutationInputs
+                            key={index} 
+                            index={index}
+                            mtValues={mtValues}
+                            variantList={variantList}
+                            handleMtChange={handleMtChange} />
+                    ))
                 }
                 <input type="submit" value="Add Experiment" />
             </form>
