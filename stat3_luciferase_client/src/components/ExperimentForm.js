@@ -23,7 +23,7 @@ function ExperimentForm(){
     }
 
     // Handle state for MT luciferase values
-    const blankMtEntry = {mutation: '', variant_id: '', firefly: '', renilla: ''}
+    const blankMtEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
     const [mtValues, setMtValues] = useState([{...blankMtEntry}])
     function handleMtChange(event){
         const updatedMtValues = [...mtValues]
@@ -47,7 +47,7 @@ function ExperimentForm(){
         })
         // Store variant id if variant exists in list
         mtValues.map(entry => {
-            const mutation = entry['mutation']
+            const mutation = entry['protein_variant']
             if (variantObject[mutation]){
                 entry['variant_id'] = variantObject[mutation].id
             }

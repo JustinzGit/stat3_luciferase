@@ -7,7 +7,7 @@ function MutationInputs({ index, mtValues, handleMtChange, variantList }){
                 data-index={index} 
                 value={mtValues[index].mutation} 
                 onChange={handleMtChange} 
-                className="mutation" 
+                className="protein_variant" 
                 autoComplete="off" />
             
             <datalist id="variants">
