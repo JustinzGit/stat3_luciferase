@@ -23,7 +23,7 @@ function ExperimentForm(){
     }
 
     // Handle state for MT luciferase values
-    const blankMtEntry = {mutation: '', firefly: '', renilla: ''}
+    const blankMtEntry = {mutation: '', variant_id: '', firefly: '', renilla: ''}
     const [mtValues, setMtValues] = useState([{...blankMtEntry}])
     function handleMtChange(event){
         const updatedMtValues = [...mtValues]
@@ -38,7 +38,25 @@ function ExperimentForm(){
 
     function handleSubmit(event){
         event.preventDefault()
-        
+
+        // Set mutation id using variantList
+        // Store list in object for quick access to variant id
+        const variantObject = {}
+        variantList.map(entry => {
+            return variantObject[entry.protein_variant] = entry
+        })
+        // Store variant id if variant exists in list
+        mtValues.map(entry => {
+            const mutation = entry['mutation']
+            if (variantObject[mutation]){
+                entry['variant_id'] = variantObject[mutation].id
+            }
+            else {
+                entry['variant_id'] = false
+            }
+            return entry
+        })
+
         const wt_firefly = wtValues.wt_firefly
         const wt_renilla = wtValues.wt_renilla
         const ff_ren_ratio = wt_firefly/wt_renilla
@@ -52,7 +70,7 @@ function ExperimentForm(){
             },
             variants: mtValues
         }
-        
+
         fetch('http://localhost:3001/experiments', { 
             method: "POST",
             credentials: 'include',
