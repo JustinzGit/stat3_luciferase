@@ -71,6 +71,13 @@ function ExperimentForm(){
             return entry
         })
 
+        // Filter state into two arrays
+        // Variants that already exist in database
+        let luciferaseValues = mtValues.filter(entry => entry['variant_id'])
+        
+        // Variants that will need to be added
+        let newVariants = mtValues.filter(entry => !entry['variant_id'])
+
         const data = {
             experiment: {
                 date: date,
@@ -78,22 +85,25 @@ function ExperimentForm(){
                 wt_renilla: wt_renilla,
                 ff_ren_ratio: wt_ff_ren_ratio
             },
-            variants: mtValues
+           luciferaseValues: luciferaseValues,
+           variants: newVariants
         }
 
-        fetch('http://localhost:3001/experiments', { 
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify(data) 
-        })
-        .then(response => response.json())
-        .then(apiData => {
-            console.log(apiData)
-        })
+        console.log(data)
+
+        // fetch('http://localhost:3001/experiments', { 
+        //     method: "POST",
+        //     credentials: 'include',
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Accept": "application/json"
+        //     },
+        //     body: JSON.stringify(data) 
+        // })
+        // .then(response => response.json())
+        // .then(apiData => {
+        //     console.log(apiData)
+        // })
     }
 
     return(
