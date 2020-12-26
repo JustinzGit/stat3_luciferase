@@ -38,9 +38,34 @@ function ExperimentForm(){
 
     function handleSubmit(event){
         event.preventDefault()
-        console.log(date)
-        console.log(wtValues)
-        console.log(mtValues)
+        
+        const wt_firefly = wtValues.wt_firefly
+        const wt_renilla = wtValues.wt_renilla
+        const ff_ren_ratio = wt_firefly/wt_renilla
+
+        const data = {
+            experiment: {
+                date: date,
+                wt_firefly: wt_firefly,
+                wt_renilla: wt_renilla,
+                ff_ren_ratio: ff_ren_ratio
+            },
+            variants: mtValues
+        }
+        
+        fetch('http://localhost:3001/experiments', { 
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(data) 
+        })
+        .then(response => response.json())
+        .then(apiData => {
+            console.log(apiData)
+        })
     }
 
     return(
