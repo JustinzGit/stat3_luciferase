@@ -2,7 +2,8 @@ function MutationInputs({ index, mtValues, handleMtChange, variantList }){
     return (
         <div key={`mutation_${index}`} id={`mutation_${index}`}>               
             Mutation:<br/>
-            <input list="variants" 
+            <input 
+                list="variants" 
                 data-index={index} 
                 value={mtValues[index].mutation} 
                 onChange={handleMtChange} 
@@ -11,8 +12,8 @@ function MutationInputs({ index, mtValues, handleMtChange, variantList }){
             
             <datalist id="variants">
                 {
-                    variantList.map((variant) => 
-                        <option key={variant.id} value={variant.protein_variant}>{variant.protein_variant}</option>)
+                    variantList.map((variant) =>
+                        <option key={variant.id} value={variant.protein_variant} />)
                 }
             </datalist>
 
