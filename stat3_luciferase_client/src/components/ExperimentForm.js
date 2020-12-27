@@ -60,6 +60,13 @@ function ExperimentForm(){
             return entry
         })
 
+        let newVariants = mtValues.filter(variant => !variant.variant_id)
+        newVariants = newVariants.map(variant => variant.protein_variant)
+        if (newVariants.length !== 0){
+            console.log(`${newVariants.join(", ")} are not present in database`)
+            return
+        }
+
         const data = {
             experiment: {
                 date: date,
@@ -68,8 +75,6 @@ function ExperimentForm(){
             },
            luciferase_values: mtValues
         }
-
-        console.log(data)
 
         // fetch('http://localhost:3001/experiments', { 
         //     method: "POST",
