@@ -24,7 +24,6 @@ function ExperimentForm(){
 
     // Handle state for MT luciferase values
     const blankMtEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
-
     const [mtValues, setMtValues] = useState([{...blankMtEntry}])
     function handleMtChange(event){
         const updatedMtValues = [...mtValues]
@@ -76,19 +75,21 @@ function ExperimentForm(){
            luciferase_values: mtValues
         }
 
-        // fetch('http://localhost:3001/experiments', { 
-        //     method: "POST",
-        //     credentials: 'include',
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "Accept": "application/json"
-        //     },
-        //     body: JSON.stringify(data) 
-        // })
-        // .then(response => response.json())
-        // .then(apiData => {
-        //     console.log(apiData)
-        // })
+        console.log(data)
+
+        fetch('http://localhost:3001/experiments', { 
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(data) 
+        })
+        .then(response => response.json())
+        .then(apiData => {
+            console.log(apiData)
+        })
     }
 
     return(
