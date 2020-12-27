@@ -23,8 +23,7 @@ function ExperimentForm(){
     }
 
     // Handle state for MT luciferase values
-    const blankMtEntry = {protein_variant: '', variant_id: '', firefly: '', 
-    renilla: '', ff_ren_ratio: '', fold_change: ''}
+    const blankMtEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
 
     const [mtValues, setMtValues] = useState([{...blankMtEntry}])
     function handleMtChange(event){
@@ -41,10 +40,6 @@ function ExperimentForm(){
     function handleSubmit(event){
         event.preventDefault()
 
-        const wt_firefly = wtValues.wt_firefly
-        const wt_renilla = wtValues.wt_renilla
-        const wt_ff_ren_ratio = wt_firefly/wt_renilla
-
         // Set mutation id using variantList
         // Store list in object for quick access to variant id
         const variantObject = {}
@@ -52,15 +47,9 @@ function ExperimentForm(){
             return variantObject[entry.protein_variant] = entry
         })
 
-        // Calculate ratios and fold change
         // Store variant id if variant exists in list
         mtValues.map(entry => {
             const mutation = entry['protein_variant']
-            const mt_ff_ren_ratio = entry['firefly']/entry['renilla']
-            const fold_change = mt_ff_ren_ratio/wt_ff_ren_ratio
-
-            entry['ff_ren_ratio'] = mt_ff_ren_ratio
-            entry['fold_change'] = fold_change
 
             if (variantObject[mutation]){
                 entry['variant_id'] = variantObject[mutation].id
@@ -81,9 +70,8 @@ function ExperimentForm(){
         const data = {
             experiment: {
                 date: date,
-                wt_firefly: wt_firefly,
-                wt_renilla: wt_renilla,
-                ff_ren_ratio: wt_ff_ren_ratio
+                wt_firefly: wtValues.wt_firefly,
+                wt_renilla: wtValues.wt_renilla
             },
            luciferaseValues: luciferaseValues,
            variants: newVariants
