@@ -60,21 +60,13 @@ function ExperimentForm(){
             return entry
         })
 
-        // Filter state into two arrays
-        // Variants that already exist in database
-        let luciferaseValues = mtValues.filter(entry => entry['variant_id'])
-        
-        // Variants that will need to be added
-        let newVariants = mtValues.filter(entry => !entry['variant_id'])
-
         const data = {
             experiment: {
                 date: date,
                 wt_firefly: wtValues.wt_firefly,
                 wt_renilla: wtValues.wt_renilla
             },
-           luciferaseValues: luciferaseValues,
-           variants: newVariants
+           luciferase_values: mtValues
         }
 
         console.log(data)
