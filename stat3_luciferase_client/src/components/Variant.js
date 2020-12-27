@@ -16,7 +16,7 @@ function Variant() {
         .then(variant => {
             setVariant(variant)
         })
-    })
+    },[protein_variant])
 
     return(
         <div>
