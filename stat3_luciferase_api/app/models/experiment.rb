@@ -8,4 +8,11 @@ class Experiment < ApplicationRecord
     def calculate_ff_ren_ratio
         self.ff_ren_ratio = self.wt_firefly/self.wt_renilla
     end 
+
+    def calculate_fold_changes
+        self.luciferase_values.each do |lv|
+            lv.ff_ren_ratio = lv.firefly/lv.renilla
+            lv.fold_change = lv.ff_ren_ratio/self.ff_ren_ratio
+        end 
+    end 
 end
