@@ -4,9 +4,16 @@ import MutationInputs from './MutationInputs'
 
 function ExperimentForm(){
     const [variantList] = useVariantList()
+    const [date, setDate] = useState('')
+
+    // State for WT Luciferase Values
+    const [wtValues, setWtValues] = useState({ wt_firefly: '', wt_renilla: ''})
+
+    // State for MT Luciferase Values
+    const blankMtEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
+    const [mtValues, setMtValues] = useState([{...blankMtEntry}])
 
     // On mount, render todays date
-    const [date, setDate] = useState('')
     useEffect(() => {
         let dateObj = new Date()
         let day = String(dateObj.getDate()).padStart(2, '0')
@@ -16,15 +23,12 @@ function ExperimentForm(){
         setDate(todaysDate)
     }, [])
 
-    // Handle state for WT luciferase values
-    const [wtValues, setWtValues] = useState({ wt_firefly: '', wt_renilla: ''})
+    // Set WT luciferase values
     function handleWtChange(event){
         setWtValues({...wtValues, [event.target.name]: event.target.value})
     }
 
-    // Handle state for MT luciferase values
-    const blankMtEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
-    const [mtValues, setMtValues] = useState([{...blankMtEntry}])
+    // Set MT luciferase values 
     function handleMtChange(event){
         const updatedMtValues = [...mtValues]
         updatedMtValues[event.target.dataset.index][event.target.className] = event.target.value
@@ -39,8 +43,7 @@ function ExperimentForm(){
     function handleSubmit(event){
         event.preventDefault()
 
-        // Set mutation id using variantList
-        // Store list in object for quick access to variant id
+        // Store variant list in object for quick access to variant id
         const variantObject = {}
         variantList.map(entry => {
             return variantObject[entry.protein_variant] = entry
@@ -59,6 +62,7 @@ function ExperimentForm(){
             return entry
         })
 
+        // Prevent form submission if variants dont exist in database
         let newVariants = mtValues.filter(variant => !variant.variant_id)
         newVariants = newVariants.map(variant => variant.protein_variant)
         if (newVariants.length !== 0){
