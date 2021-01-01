@@ -6,13 +6,14 @@ function ExperimentForm(){
     const [variantList] = useVariantList()
     const [date, setDate] = useState('')
 
+    const blankEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
     const [experimentState, setExperimentState] = useState({
         experiment: {
             date: date,
             wt_firefly: '',
             wt_renilla: ''
         },
-        luciferase_values: []
+        luciferase_values: [blankEntry]
     })
 
     // State for WT Luciferase Values
@@ -46,9 +47,10 @@ function ExperimentForm(){
     
     // Add blank luciferase value entries
     function addMutation(){
-        setExperimentState({ ...experimentState, luciferase_values: [
-            {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
-        ]})
+        setExperimentState({ 
+            ...experimentState, 
+            luciferase_values: [...experimentState.luciferase_values, blankEntry] 
+        })
         console.log(experimentState)
     }
 
