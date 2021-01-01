@@ -44,9 +44,12 @@ function ExperimentForm(){
         setMtValues(updatedMtValues)
     }
     
-    // Add blank entries to mtValues  
+    // Add blank luciferase value entries
     function addMutation(){
-        setMtValues([...mtValues, {...blankMtEntry}])
+        setExperimentState({ ...experimentState, luciferase_values: [
+            {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
+        ]})
+        console.log(experimentState)
     }
 
     function handleSubmit(event){
