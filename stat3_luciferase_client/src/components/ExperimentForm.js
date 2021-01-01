@@ -6,6 +6,15 @@ function ExperimentForm(){
     const [variantList] = useVariantList()
     const [date, setDate] = useState('')
 
+    const [experimentState, setExperimentState] = useState({
+        experiment: {
+            date: date,
+            wt_firefly: '',
+            wt_renilla: ''
+        },
+        luciferase_values: []
+    })
+
     // State for WT Luciferase Values
     const [wtValues, setWtValues] = useState({ wt_firefly: '', wt_renilla: ''})
 
