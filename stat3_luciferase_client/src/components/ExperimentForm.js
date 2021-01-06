@@ -4,16 +4,13 @@ import MutationInputs from './MutationInputs'
 
 function ExperimentForm(){
     const [variantList] = useVariantList()
-    const [date, setDate] = useState('')
 
     const blankEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
     const [experimentState, setExperimentState] = useState({
-        experiment: {
-            date: date,
+            date: '',
             wt_firefly: '',
-            wt_renilla: ''
-        },
-        luciferase_values: [blankEntry]
+            wt_renilla: '',
+            luciferase_values: [blankEntry]
     })
 
     // State for WT Luciferase Values
@@ -30,7 +27,8 @@ function ExperimentForm(){
         let month = String(dateObj.getMonth() + 1).padStart(2, '0')
         let year = dateObj.getFullYear();
         let todaysDate = year + '-' + month + '-' + day
-        setDate(todaysDate)
+        setExperimentState({ ...experimentState, date: todaysDate})
+        // eslint-disable-next-line
     }, [])
 
     // Set WT luciferase values
@@ -84,37 +82,37 @@ function ExperimentForm(){
             return
         }
 
-        const data = {
-            experiment: {
-                date: date,
-                wt_firefly: wtValues.wt_firefly,
-                wt_renilla: wtValues.wt_renilla
-            },
-           luciferase_values: mtValues
-        }
+        // const data = {
+        //     experiment: {
+        //         date: date,
+        //         wt_firefly: wtValues.wt_firefly,
+        //         wt_renilla: wtValues.wt_renilla
+        //     },
+        //    luciferase_values: mtValues
+        // }
 
-        console.log(data)
+        console.log(experimentState)
 
-        fetch('http://localhost:3001/experiments', { 
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify(data) 
-        })
-        .then(response => response.json())
-        .then(apiData => {
-            console.log(apiData)
-        })
+        // fetch('http://localhost:3001/experiments', { 
+        //     method: "POST",
+        //     credentials: 'include',
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Accept": "application/json"
+        //     },
+        //     body: JSON.stringify(data) 
+        // })
+        // .then(response => response.json())
+        // .then(apiData => {
+        //     console.log(apiData)
+        // })
     }
 
     return(
         <div id="experiment_form">
             <form onSubmit={handleSubmit}>
                 <h3>Add Experiment</h3>
-                <p>Date: <input value={date} type="date" onChange={event => setDate(event.target.value)}/></p>
+                <p>Date: <input value={experimentState.date} type="date" onChange={event => setExperimentState({...experimentState, date: event.target.value})}/></p>
 
                 <p>WT Firefly: <input onChange={handleWtChange} value={wtValues.wt_firefly} type="number" name="wt_firefly" /></p>
                 <p>WT Renilla: <input onChange={handleWtChange} value={wtValues.wt_renilla} type="number" name="wt_renilla" /></p>
