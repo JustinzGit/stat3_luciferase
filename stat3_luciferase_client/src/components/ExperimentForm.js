@@ -74,30 +74,28 @@ function ExperimentForm(){
             return
         }
 
-        // const data = {
-        //     experiment: {
-        //         date: date,
-        //         wt_firefly: wtValues.wt_firefly,
-        //         wt_renilla: wtValues.wt_renilla
-        //     },
-        //    luciferase_values: mtValues
-        // }
+        const data = {
+            experiment: {
+                date: experimentState.date,
+                wt_firefly: experimentState.wt_firefly,
+                wt_renilla: experimentState.wt_renilla
+            },
+           luciferase_values: experimentState.luciferase_values
+        }
 
-        console.log(experimentState)
-
-        // fetch('http://localhost:3001/experiments', { 
-        //     method: "POST",
-        //     credentials: 'include',
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "Accept": "application/json"
-        //     },
-        //     body: JSON.stringify(data) 
-        // })
-        // .then(response => response.json())
-        // .then(apiData => {
-        //     console.log(apiData)
-        // })
+        fetch('http://localhost:3001/experiments', { 
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(data) 
+        })
+        .then(response => response.json())
+        .then(apiData => {
+            console.log(apiData)
+        })
     }
 
     return(
