@@ -13,7 +13,7 @@ function ExperimentForm(){
             luciferase_values: [blankEntry]
     })
 
-    // On mount, render todays date
+    // On mount, render and set todays date
     useEffect(() => {
         let dateObj = new Date()
         let day = String(dateObj.getDate()).padStart(2, '0')
@@ -42,7 +42,6 @@ function ExperimentForm(){
             ...experimentState, 
             luciferase_values: [...experimentState.luciferase_values, blankEntry] 
         })
-        console.log(experimentState)
     }
 
     function handleSubmit(event){
@@ -116,7 +115,7 @@ function ExperimentForm(){
                         <MutationInputs
                             key={index} 
                             index={index}
-                            mtValues={experimentState.luciferase_values}
+                            luciferaseValues={experimentState.luciferase_values}
                             variantList={variantList}
                             handleMtChange={handleMtChange} />
                     ))
