@@ -13,9 +13,6 @@ function ExperimentForm(){
             luciferase_values: [blankEntry]
     })
 
-    // State for WT Luciferase Values
-    const [wtValues, setWtValues] = useState({ wt_firefly: '', wt_renilla: ''})
-
     // State for MT Luciferase Values
     const blankMtEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
     const [mtValues, setMtValues] = useState([{...blankMtEntry}])
@@ -33,7 +30,7 @@ function ExperimentForm(){
 
     // Set WT luciferase values
     function handleWtChange(event){
-        setWtValues({...wtValues, [event.target.name]: event.target.value})
+        setExperimentState({...experimentState, [event.target.name]: event.target.value})
     }
 
     // Set MT luciferase values 
@@ -114,8 +111,8 @@ function ExperimentForm(){
                 <h3>Add Experiment</h3>
                 <p>Date: <input value={experimentState.date} type="date" onChange={event => setExperimentState({...experimentState, date: event.target.value})}/></p>
 
-                <p>WT Firefly: <input onChange={handleWtChange} value={wtValues.wt_firefly} type="number" name="wt_firefly" /></p>
-                <p>WT Renilla: <input onChange={handleWtChange} value={wtValues.wt_renilla} type="number" name="wt_renilla" /></p>
+                <p>WT Firefly: <input onChange={handleWtChange} value={experimentState.wt_firefly} type="number" name="wt_firefly" /></p>
+                <p>WT Renilla: <input onChange={handleWtChange} value={experimentState.wt_renilla} type="number" name="wt_renilla" /></p>
                 
                 <p><input onClick={addMutation} type="button" value="Add Mutation"/></p>
                 {
