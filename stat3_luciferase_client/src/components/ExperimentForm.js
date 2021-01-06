@@ -13,10 +13,6 @@ function ExperimentForm(){
             luciferase_values: [blankEntry]
     })
 
-    // State for MT Luciferase Values
-    const blankMtEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
-    const [mtValues, setMtValues] = useState([{...blankMtEntry}])
-
     // On mount, render todays date
     useEffect(() => {
         let dateObj = new Date()
@@ -35,9 +31,9 @@ function ExperimentForm(){
 
     // Set MT luciferase values 
     function handleMtChange(event){
-        const updatedMtValues = [...mtValues]
-        updatedMtValues[event.target.dataset.index][event.target.className] = event.target.value
-        setMtValues(updatedMtValues)
+        const updatedLuciferaseValues = [...experimentState.luciferase_values]
+        updatedLuciferaseValues[event.target.dataset.index][event.target.className] = event.target.value
+        setExperimentState({...experimentState, luciferase_values: updatedLuciferaseValues})
     }
     
     // Add blank luciferase value entries
@@ -59,7 +55,7 @@ function ExperimentForm(){
         })
 
         // Store variant id if variant exists in list
-        mtValues.map(entry => {
+        experimentState.luciferase_values.map(entry => {
             const mutation = entry['protein_variant']
 
             if (variantObject[mutation]){
@@ -72,7 +68,7 @@ function ExperimentForm(){
         })
 
         // Prevent form submission if variants dont exist in database
-        let newVariants = mtValues.filter(variant => !variant.variant_id)
+        let newVariants = experimentState.luciferase_values.filter(variant => !variant.variant_id)
         newVariants = newVariants.map(variant => variant.protein_variant)
         if (newVariants.length !== 0){
             console.log(`${newVariants.join(", ")} are not present in database`)
@@ -116,11 +112,11 @@ function ExperimentForm(){
                 
                 <p><input onClick={addMutation} type="button" value="Add Mutation"/></p>
                 {
-                    mtValues.map((values, index) => (
+                    experimentState.luciferase_values.map((values, index) => (
                         <MutationInputs
                             key={index} 
                             index={index}
-                            mtValues={mtValues}
+                            mtValues={experimentState.luciferase_values}
                             variantList={variantList}
                             handleMtChange={handleMtChange} />
                     ))
