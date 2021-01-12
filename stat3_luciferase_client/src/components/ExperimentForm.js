@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
 
 function ExperimentForm(){
     const [variantList] = useVariantList()
-
+    const { date } = useParams()
     const blankEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
-    const [experimentState, setExperimentState] = useState({
-            date: '',
-            wt_firefly: '',
-            wt_renilla: '',
-            luciferase_values: [blankEntry]
-    })
+    const [experimentState, setExperimentState] = useExperiment(date)
 
     // On mount, render and set todays date
     useEffect(() => {
