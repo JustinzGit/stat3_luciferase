@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
-import addExperiment from '../actions/addExperiment'
+import addExperiment from '../actions/experiment/addExperiment'
 
 function ExperimentForm(){
     const [variantList] = useVariantList()
