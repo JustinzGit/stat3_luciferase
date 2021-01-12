@@ -15,13 +15,12 @@ class ExperimentsController < ApplicationController
   # POST /experiments
   def create
     @experiment = Experiment.new(experiment_params)
-    @experiment.calculate_ff_ren_ratio
-    @experiment.calculate_fold_changes
 
     lv_values = @experiment.set_variant_ids(luciferase_values_params)
     @experiment.luciferase_values.build(lv_values)
 
     if @experiment.valid?
+      @experiment.set_ratios_and_fold_changes
       @experiment.save
       render json: @experiment, status: :created, location: @experiment
     else
