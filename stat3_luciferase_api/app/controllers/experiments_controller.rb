@@ -16,9 +16,10 @@ class ExperimentsController < ApplicationController
   def create
     @experiment = Experiment.new(experiment_params)
     @experiment.calculate_ff_ren_ratio
-
-    @experiment.luciferase_values.build(luciferase_values_params)
     @experiment.calculate_fold_changes
+
+    lv_values = @experiment.set_variant_ids(luciferase_values_params)
+    @experiment.luciferase_values.build(lv_values)
 
     if @experiment.valid?
       @experiment.save
@@ -49,6 +50,6 @@ class ExperimentsController < ApplicationController
     end
 
     def luciferase_values_params
-      params.permit(luciferase_values: [:variant_id, :firefly, :renilla]).require(:luciferase_values)
+      params.permit(luciferase_values: [:protein_variant, :variant_id, :firefly, :renilla]).require(:luciferase_values)
     end 
 end
