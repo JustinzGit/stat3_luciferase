@@ -1,6 +1,9 @@
 import React from "react"
+import { useHistory } from "react-router-dom"
 
 function Experiment({ data }){
+    const history = useHistory()
+
     return(
         <div>
             <p>Date: <b>{data.date}</b></p>
@@ -11,6 +14,7 @@ function Experiment({ data }){
             <p>MT Renilla: <b>{data.luciferase_values.renilla}</b></p>
             <p>MT FF/Ren: <b>{data.luciferase_values.ff_ren_ratio}</b></p>
             <p>Fold Change <b>{data.luciferase_values.fold_change}</b></p>
+            <button onClick={() => history.push(`/experiments/edit/${data.date}`)}>Edit Experiment</button>
             <hr></hr>
         </div>
     )
