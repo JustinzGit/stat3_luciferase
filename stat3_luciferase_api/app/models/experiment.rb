@@ -15,4 +15,18 @@ class Experiment < ApplicationRecord
             lv.fold_change = lv.ff_ren_ratio/self.ff_ren_ratio
         end 
     end 
+
+    def set_variant_ids(lv_value_params)
+        lv_value_params.map { |variant_entry|
+            variant = Variant.find_by(protein_variant: variant_entry[:protein_variant])
+            if variant
+                variant_entry[:variant_id] = variant.id
+            else 
+                self.errors.add(:variant, "#{variant_entry[:protein_variant]} does not exist in db")
+            end
+
+            variant_entry.delete("protein_variant")
+            variant_entry
+        } 
+    end 
 end
