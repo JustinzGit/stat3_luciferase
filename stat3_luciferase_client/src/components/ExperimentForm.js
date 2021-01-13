@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
+import { useLocation } from 'react-router-dom'
 
-function ExperimentForm(){
+function ExperimentForm({ submitData }){
+    const location = useLocation()
     const [variantList] = useVariantList()
-    const { date } = useParams()
+    const { id } = useParams()
     const blankEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
-    const [experimentState, setExperimentState] = useExperiment(date)
+    const [experimentState, setExperimentState] = useExperiment(id)
 
     // On mount, render and set todays date
     useEffect(() => {
@@ -23,6 +25,7 @@ function ExperimentForm(){
 
     // Set WT luciferase values
     function handleWtChange(event){
+        console.log(location.pathname)
         setExperimentState({...experimentState, [event.target.name]: event.target.value})
     }
 
@@ -43,35 +46,15 @@ function ExperimentForm(){
 
     function handleSubmit(event){
         event.preventDefault()
-
-        const data = {
-            experiment: {
-                date: experimentState.date,
-                wt_firefly: experimentState.wt_firefly,
-                wt_renilla: experimentState.wt_renilla
-            },
-           luciferase_values: experimentState.luciferase_values
-        }
-
-        fetch('http://localhost:3001/experiments', { 
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify(data) 
-        })
-        .then(response => response.json())
-        .then(apiData => {
-            console.log(apiData)
-        })
+        submitData(experimentState)
     }
 
     return(
         <div id="experiment_form">
             <form onSubmit={handleSubmit}>
-                <h3>Add Experiment</h3>
+            {location.pathname === '/experiments/add' && <h3>Add Experiment</h3>}
+            {location.pathname === `/experiments/edit/${id}` && <h3>Edit Experiment</h3>}
+
                 <p>Date: <input value={experimentState.date} type="date" onChange={event => setExperimentState({...experimentState, date: event.target.value})}/></p>
 
                 <p>WT Firefly: <input onChange={handleWtChange} value={experimentState.wt_firefly} type="number" name="wt_firefly" /></p>
@@ -88,7 +71,8 @@ function ExperimentForm(){
                             handleMtChange={handleMtChange} />
                     ))
                 }
-                <input type="submit" value="Add Experiment" />
+                {location.pathname === '/experiments/add' && <input type="submit" value="Add Experiment" />}
+                {location.pathname === `/experiments/edit/${id}` && <input type="submit" value="Edit Experiment" />}
             </form>
         </div>
     )
