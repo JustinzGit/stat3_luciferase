@@ -1,5 +1,5 @@
 class ExperimentSerializer < ActiveModel::Serializer
-  attributes :date, :wt_firefly, :wt_renilla, :ff_ren_ratio, :variants
+  attributes :id, :date, :wt_firefly, :wt_renilla, :ff_ren_ratio, :variants
 
   def ff_ren_ratio
     "#{'%.2f' % object.ff_ren_ratio}".to_f
