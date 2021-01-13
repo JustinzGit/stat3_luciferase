@@ -2,7 +2,8 @@ function MutationInputs({ index, luciferaseValues, handleMtChange, variantList }
     return (
         <div key={`mutation_${index}`} id={`mutation_${index}`}>               
             Mutation:<br/>
-            <input 
+            <input
+                required 
                 list="variants" 
                 data-index={index}
                 value={luciferaseValues[index].protein_variant}  
@@ -18,7 +19,8 @@ function MutationInputs({ index, luciferaseValues, handleMtChange, variantList }
             </datalist>
 
             <p>Firefly: 
-            <input 
+            <input
+                required 
                 type="number" 
                 data-index={index} 
                 className="firefly"
@@ -26,7 +28,8 @@ function MutationInputs({ index, luciferaseValues, handleMtChange, variantList }
                 value={luciferaseValues[index].firefly} /></p>
 
             <p>Renilla: 
-            <input 
+            <input
+                required 
                 type="number" 
                 data-index={index}
                 className="renilla"
