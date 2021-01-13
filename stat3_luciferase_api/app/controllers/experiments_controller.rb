@@ -17,14 +17,21 @@ class ExperimentsController < ApplicationController
     @experiment = Experiment.new(experiment_params)
 
     lv_values = @experiment.set_variant_ids(luciferase_values_params)
+    variants_not_in_db = @experiment.errors[:luciferase_values]
     @experiment.luciferase_values.build(lv_values)
 
     if @experiment.valid?
       @experiment.set_ratios_and_fold_changes
       @experiment.save
       render json: @experiment, status: :created, location: @experiment
+
     else
-      render json: @experiment.errors, status: :unprocessable_entity
+      render json: {
+       errors: {
+        date: @experiment.errors.full_messages_for(:date), 
+        variants: variants_not_in_db,
+       }
+      }, status: :unprocessable_entity
     end
   end
 
