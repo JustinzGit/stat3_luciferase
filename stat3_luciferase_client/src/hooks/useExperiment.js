@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 function useExperiment(id = null){
     const [experimentState, setExperimentState] = useState({
+        id: '',
         date: '',
         wt_firefly: '',
         wt_renilla: '',
@@ -26,6 +27,7 @@ function useExperiment(id = null){
                 }))
     
                 const experiment = {
+                    id: apiData.id,
                     date: apiData.date,
                     wt_firefly: apiData.wt_firefly,
                     wt_renilla: apiData.wt_renilla,
