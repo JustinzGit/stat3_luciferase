@@ -25,7 +25,7 @@ class Experiment < ApplicationRecord
         self.calculate_fold_changes
     end 
 
-    # Iterates through luciferase values
+    # Iterates through experiments luciferase values
     # Sets the variant ID for each entry 
     def set_variant_ids(lv_params)
         lv_params.map { |variant_entry|
@@ -33,11 +33,11 @@ class Experiment < ApplicationRecord
             if variant
                 variant_entry[:variant_id] = variant.id
             else 
-                self.errors.add(:variant, "#{variant_entry[:protein_variant]} does not exist in db")
+                self.errors.add(:luciferase_values, variant_entry[:protein_variant])
             end
 
             variant_entry.delete("protein_variant")
             variant_entry
         } 
-    end 
+    end
 end
