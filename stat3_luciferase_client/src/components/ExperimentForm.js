@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
@@ -6,6 +6,8 @@ import MutationInputs from './MutationInputs'
 import { useLocation } from 'react-router-dom'
 
 function ExperimentForm({ submitData }){
+    const variantErrors = []
+    const [errorMessage, setErrorMessage] = useState('')
     const location = useLocation()
     const [variantList] = useVariantList()
     const { id } = useParams()
@@ -43,15 +45,7 @@ function ExperimentForm({ submitData }){
         })
     }
 
-    function handleSubmit(event){
-        event.preventDefault()
-        assignVariantIds()
-        // console.log(experimentState)
-        // submitData(experimentState)
-    }
-
     function assignVariantIds(){
-
         // Store variant list in object for quick access to variant id
         const variantObject = {}
         variantList.map(entry => {
@@ -67,15 +61,29 @@ function ExperimentForm({ submitData }){
                 delete entry['protein_variant']
             }
             else {
-                entry['variant_id'] = false
+                variantErrors.push(entry['protein_variant'])
             }
             return entry
         })
     }
 
+    function handleSubmit(event){
+        event.preventDefault()
+        assignVariantIds()
+
+        if (variantErrors.length !== 0){
+            setErrorMessage(`Not Present In Database: ${variantErrors.join(", ")}`)
+            variantErrors.length = 0
+        }
+        else {
+            submitData(experimentState)
+        }
+    }
+
     return(
         <div id="experiment_form">
             <form onSubmit={handleSubmit}>
+            {<h3 style={{color: 'red'}}>{errorMessage}</h3>}
             {location.pathname === '/experiments/add' && <h3>Add Experiment</h3>}
             {location.pathname === `/experiments/edit/${id}` && <h3>Edit Experiment</h3>}
 
