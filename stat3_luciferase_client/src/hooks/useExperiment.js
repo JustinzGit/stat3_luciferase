@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-function useExperiment(date = null){
+function useExperiment(id = null){
     const [experimentState, setExperimentState] = useState({
         date: '',
         wt_firefly: '',
@@ -14,8 +14,8 @@ function useExperiment(date = null){
     })
 
     useEffect(() => {
-        if (date !== null){
-            fetch(`http://localhost:3001/experiments/${date}`, { credentials: 'include' })
+        if (id !== null){
+            fetch(`http://localhost:3001/experiments/${id}`, { credentials: 'include' })
             .then(response => response.json())
             .then(apiData => {
                 const luciferase_values = apiData.variants.map(variant => ({
@@ -35,7 +35,7 @@ function useExperiment(date = null){
                 setExperimentState(experiment)
             })
         }
-    }, [date])
+    }, [id])
     
     return [ experimentState, setExperimentState ]
 }
