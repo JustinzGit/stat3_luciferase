@@ -35,7 +35,7 @@ function useExperiment(date = null){
                 setExperimentState(experiment)
             })
         }
-    }, [])
+    }, [date])
     
     return [ experimentState, setExperimentState ]
 }
