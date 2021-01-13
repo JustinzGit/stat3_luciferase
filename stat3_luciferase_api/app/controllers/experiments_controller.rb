@@ -8,7 +8,7 @@ class ExperimentsController < ApplicationController
 
   # GET /experiments/1
   def show
-    @experiment = Experiment.find_by(date: params[:date])
+    @experiment = Experiment.find(params[:id])
     render json: @experiment
   end
 
