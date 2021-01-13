@@ -24,20 +24,4 @@ class Experiment < ApplicationRecord
         self.calculate_ff_ren_ratio
         self.calculate_fold_changes
     end 
-
-    # Iterates through experiments luciferase values
-    # Sets the variant ID for each entry 
-    def set_variant_ids(lv_params)
-        lv_params.map { |variant_entry|
-            variant = Variant.find_by(protein_variant: variant_entry[:protein_variant])
-            if variant
-                variant_entry[:variant_id] = variant.id
-            else 
-                self.errors.add(:luciferase_values, variant_entry[:protein_variant])
-            end
-
-            variant_entry.delete("protein_variant")
-            variant_entry
-        } 
-    end
 end
