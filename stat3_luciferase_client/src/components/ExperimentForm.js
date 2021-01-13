@@ -25,7 +25,6 @@ function ExperimentForm({ submitData }){
 
     // Set WT luciferase values
     function handleWtChange(event){
-        console.log(location.pathname)
         setExperimentState({...experimentState, [event.target.name]: event.target.value})
     }
 
@@ -46,7 +45,32 @@ function ExperimentForm({ submitData }){
 
     function handleSubmit(event){
         event.preventDefault()
-        submitData(experimentState)
+        assignVariantIds()
+        // console.log(experimentState)
+        // submitData(experimentState)
+    }
+
+    function assignVariantIds(){
+
+        // Store variant list in object for quick access to variant id
+        const variantObject = {}
+        variantList.map(entry => {
+            return variantObject[entry.protein_variant] = entry
+        })
+
+        // Store variant id if variant exists in list
+        experimentState.luciferase_values.map(entry => {
+            const mutation = entry['protein_variant']
+
+            if (variantObject[mutation]){
+                entry['variant_id'] = variantObject[mutation].id
+                delete entry['protein_variant']
+            }
+            else {
+                entry['variant_id'] = false
+            }
+            return entry
+        })
     }
 
     return(
