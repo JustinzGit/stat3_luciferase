@@ -44,33 +44,6 @@ function ExperimentForm(){
     function handleSubmit(event){
         event.preventDefault()
 
-        // Store variant list in object for quick access to variant id
-        const variantObject = {}
-        variantList.map(entry => {
-            return variantObject[entry.protein_variant] = entry
-        })
-
-        // Store variant id if variant exists in list
-        experimentState.luciferase_values.map(entry => {
-            const mutation = entry['protein_variant']
-
-            if (variantObject[mutation]){
-                entry['variant_id'] = variantObject[mutation].id
-            }
-            else {
-                entry['variant_id'] = false
-            }
-            return entry
-        })
-
-        // Prevent form submission if variants dont exist in database
-        let newVariants = experimentState.luciferase_values.filter(variant => !variant.variant_id)
-        newVariants = newVariants.map(variant => variant.protein_variant)
-        if (newVariants.length !== 0){
-            console.log(`${newVariants.join(", ")} are not present in database`)
-            return
-        }
-
         const data = {
             experiment: {
                 date: experimentState.date,
