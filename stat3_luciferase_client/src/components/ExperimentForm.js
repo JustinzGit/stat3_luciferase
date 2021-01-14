@@ -76,7 +76,7 @@ function ExperimentForm({ submitData }){
         }
 
         else {
-            console.log(experimentState)
+            console.log("ADD")
             // const data = {
             //     experiment: {
             //         date: experimentState.date,
@@ -102,9 +102,42 @@ function ExperimentForm({ submitData }){
         }
     }
 
+    function editExperiment(){
+        assignVariantIds()
+
+        if (variantErrors.length !== 0){
+            setErrorMessage(`Not Present In Database: ${variantErrors.join(", ")}`)
+            variantErrors.length = 0
+        }
+        else {
+            console.log("EDIT")
+            const data = {
+                experiment: {
+                    date: experimentState.date,
+                    wt_firefly: experimentState.wt_firefly,
+                    wt_renilla: experimentState.wt_renilla
+                },
+               luciferase_values: experimentState.luciferase_values
+            }
+        
+            // fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
+            //         method: "PATCH",
+            //         credentials: 'include',
+            //         headers: {
+            //             "Content-Type": "application/json",
+            //             "Accept": "application/json"
+            //         },
+            //         body: JSON.stringify(data) 
+            //     })
+            //     .then(response => response.json())
+            //     .then(apiData => {
+            //         console.log(apiData)
+            //     })
+        }
+    }
+
     return(
         <div id="experiment_form">
-            <form>
             {<h3 style={{color: 'red'}}>{errorMessage}</h3>}
             {location.pathname === '/experiments/add' && <h3>Add Experiment</h3>}
             {location.pathname === `/experiments/edit/${id}` && <h3>Edit Experiment</h3>}
@@ -126,8 +159,7 @@ function ExperimentForm({ submitData }){
                     ))
                 }
                 {location.pathname === '/experiments/add' && <input type="button" value="Add Experiment" onClick={addExperiment} />}
-                {location.pathname === `/experiments/edit/${id}` && <input type="submit" value="Edit Experiment" />}
-            </form>
+                {location.pathname === `/experiments/edit/${id}` && <input type="button" value="Edit Experiment" onClick={editExperiment} />}
         </div>
     )
 }
