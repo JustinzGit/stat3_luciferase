@@ -4,13 +4,16 @@ import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
 import { useLocation } from 'react-router-dom'
+import Errors from './Errors'
 
 function ExperimentForm({ submitData }){
-    const variantErrors = []
-    const [errorMessage, setErrorMessage] = useState('')
-    const location = useLocation()
-    const [variantList] = useVariantList()
+    const [errors, setErrors] = useState([])
+
     const { id } = useParams()
+    const location = useLocation()
+
+    const [variantList] = useVariantList()
+    
     const blankEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
     const [experimentState, setExperimentState] = useExperiment(id)
 
@@ -46,6 +49,7 @@ function ExperimentForm({ submitData }){
     }
 
     function assignVariantIds(){
+
         // Store variant list in object for quick access to variant id
         const variantObject = {}
         variantList.map(entry => {
@@ -60,9 +64,6 @@ function ExperimentForm({ submitData }){
                 entry['variant_id'] = variantObject[mutation].id
                 delete entry['protein_variant']
             }
-            else {
-                variantErrors.push(entry['protein_variant'])
-            }
             return entry
         })
     }
@@ -70,9 +71,13 @@ function ExperimentForm({ submitData }){
     function addExperiment(){
         assignVariantIds()
 
-        if (variantErrors.length !== 0){
-            setErrorMessage(`Not Present In Database: ${variantErrors.join(", ")}`)
-            variantErrors.length = 0
+        const variantsNotInDb = experimentState.luciferase_values
+            .filter(entry => entry.protein_variant)
+            .map(entry => entry.protein_variant)
+
+        debugger
+        if (variantsNotInDb.length !== 0){
+            setErrors([...errors, `Not Present in Database: ${[...variantsNotInDb]}`])
         }
 
         else {
@@ -102,23 +107,23 @@ function ExperimentForm({ submitData }){
         }
     }
 
-    function editExperiment(){
-        assignVariantIds()
+    // function editExperiment(){
+    //     assignVariantIds()
 
-        if (variantErrors.length !== 0){
-            setErrorMessage(`Not Present In Database: ${variantErrors.join(", ")}`)
-            variantErrors.length = 0
-        }
-        else {
-            console.log("EDIT")
-            const data = {
-                experiment: {
-                    date: experimentState.date,
-                    wt_firefly: experimentState.wt_firefly,
-                    wt_renilla: experimentState.wt_renilla
-                },
-               luciferase_values: experimentState.luciferase_values
-            }
+        // if (variantErrors.length !== 0){
+        //     setErrorMessage(`Not Present In Database: ${variantErrors.join(", ")}`)
+        //     variantErrors.length = 0
+        // }
+        // else {
+        //     console.log("EDIT")
+        //     const data = {
+        //         experiment: {
+        //             date: experimentState.date,
+        //             wt_firefly: experimentState.wt_firefly,
+        //             wt_renilla: experimentState.wt_renilla
+        //         },
+        //        luciferase_values: experimentState.luciferase_values
+        //     }
         
             // fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
             //         method: "PATCH",
@@ -133,14 +138,15 @@ function ExperimentForm({ submitData }){
             //     .then(apiData => {
             //         console.log(apiData)
             //     })
-        }
-    }
+    //     }
+    // }
 
     return(
         <div id="experiment_form">
-            {<h3 style={{color: 'red'}}>{errorMessage}</h3>}
-            {location.pathname === '/experiments/add' && <h3>Add Experiment</h3>}
-            {location.pathname === `/experiments/edit/${id}` && <h3>Edit Experiment</h3>}
+            <form>
+                {<Errors messages={errors} />}
+                {location.pathname === '/experiments/add' && <h3>Add Experiment</h3>}
+                {/* {location.pathname === `/experiments/edit/${id}` && <h3>Edit Experiment</h3>} */}
 
                 <p>Date: <input value={experimentState.date} type="date" onChange={event => setExperimentState({...experimentState, date: event.target.value})}/></p>
 
@@ -159,7 +165,8 @@ function ExperimentForm({ submitData }){
                     ))
                 }
                 {location.pathname === '/experiments/add' && <input type="button" value="Add Experiment" onClick={addExperiment} />}
-                {location.pathname === `/experiments/edit/${id}` && <input type="button" value="Edit Experiment" onClick={editExperiment} />}
+                {/* {location.pathname === `/experiments/edit/${id}` && <input type="button" value="Edit Experiment" onClick={editExperiment} />} */}
+            </form>
         </div>
     )
 }
