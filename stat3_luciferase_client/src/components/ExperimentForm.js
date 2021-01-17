@@ -7,13 +7,9 @@ import MutationInputs from './MutationInputs'
 import Errors from './Errors'
 
 function ExperimentForm({ submitData }){
-    const [errors, setErrors] = useState([])
-
     const { id } = useParams()
-
     const [variantList] = useVariantList()
-    
-    const blankEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
+    const [errors, setErrors] = useState([])
     const [experimentState, setExperimentState] = useExperiment(id)
 
     // On mount, render and set todays date
@@ -41,6 +37,7 @@ function ExperimentForm({ submitData }){
     
     // Add blank luciferase value entries
     function addMutation(){
+        const blankEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
         setExperimentState({ 
             ...experimentState, 
             luciferase_values: [...experimentState.luciferase_values, blankEntry] 
