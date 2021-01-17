@@ -3,14 +3,13 @@ import { useParams } from 'react-router-dom'
 import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
-import { useLocation } from 'react-router-dom'
+
 import Errors from './Errors'
 
 function ExperimentForm({ submitData }){
     const [errors, setErrors] = useState([])
 
     const { id } = useParams()
-    const location = useLocation()
 
     const [variantList] = useVariantList()
     
@@ -145,8 +144,7 @@ function ExperimentForm({ submitData }){
         <div id="experiment_form">
             <form>
                 {<Errors messages={errors} />}
-                {location.pathname === '/experiments/add' && <h3>Add Experiment</h3>}
-                {/* {location.pathname === `/experiments/edit/${id}` && <h3>Edit Experiment</h3>} */}
+                {id ? <h3>Edit Experiment</h3> : <h3>Add Experiment</h3>}
 
                 <p>Date: <input value={experimentState.date} type="date" onChange={event => setExperimentState({...experimentState, date: event.target.value})}/></p>
 
@@ -164,8 +162,7 @@ function ExperimentForm({ submitData }){
                             handleMtChange={handleMtChange} />
                     ))
                 }
-                {location.pathname === '/experiments/add' && <input type="button" value="Add Experiment" onClick={addExperiment} />}
-                {/* {location.pathname === `/experiments/edit/${id}` && <input type="button" value="Edit Experiment" onClick={editExperiment} />} */}
+                {id ? <input type="button" value="Edit Experiment"/> : <input type="button" value="Add Experiment"/>}
             </form>
         </div>
     )
