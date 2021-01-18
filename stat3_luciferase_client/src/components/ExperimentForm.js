@@ -4,13 +4,15 @@ import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
 
-import Errors from './Errors'
+// import Errors from './Errors'
 
 function ExperimentForm({ submitData }){
     const { id } = useParams()
     const [variantList] = useVariantList()
-    const [errors, setErrors] = useState([])
     const [experimentState, setExperimentState] = useExperiment(id)
+
+    const [hasError, setHasError] = useState(false)
+    const [errors, setErrors] = useState()
 
     // On mount, render and set todays date
     useEffect(() => {
@@ -44,6 +46,7 @@ function ExperimentForm({ submitData }){
         })
     }
 
+    const variantsNotInDb = []
     function assignVariantIds(){
 
         // Store variant list in object for quick access to variant id
@@ -60,87 +63,59 @@ function ExperimentForm({ submitData }){
                 entry['variant_id'] = variantObject[mutation].id
                 delete entry['protein_variant']
             }
+            else {
+                variantsNotInDb.push(entry['protein_variant'])
+            }
             return entry
         })
     }
 
-    function addExperiment(){
+    function handleSubmit(event){
+        event.preventDefault()
+        setHasError(false)
+        setErrors()
         assignVariantIds()
 
-        const variantsNotInDb = experimentState.luciferase_values
-            .filter(entry => entry.protein_variant)
-            .map(entry => entry.protein_variant)
-
-        debugger
         if (variantsNotInDb.length !== 0){
-            setErrors([...errors, `Not Present in Database: ${[...variantsNotInDb]}`])
+            setHasError(true)
+            setErrors(`Not In Database: ${variantsNotInDb.join(", ")}`)
         }
-
+        else if (id){
+            console.log("PERFORM EDIT")
+        }
         else {
-            console.log("ADD")
-            // const data = {
-            //     experiment: {
-            //         date: experimentState.date,
-            //         wt_firefly: experimentState.wt_firefly,
-            //         wt_renilla: experimentState.wt_renilla
-            //     },
-            //    luciferase_values: experimentState.luciferase_values
-            // }
-        
-            // fetch('http://localhost:3001/experiments', { 
-            //         method: "POST",
-            //         credentials: 'include',
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //             "Accept": "application/json"
-            //         },
-            //         body: JSON.stringify(data) 
-            //     })
-            //     .then(response => response.json())
-            //     .then(apiData => {
-            //         console.log(apiData)
-            //     })
+            console.log("PERFORM ADD")
+            
+            const data = {
+                experiment: {
+                    date: experimentState.date,
+                    wt_firefly: experimentState.wt_firefly,
+                    wt_renilla: experimentState.wt_renilla
+                },
+               luciferase_values: experimentState.luciferase_values
+            }
+
+            fetch('http://localhost:3001/experiments', { 
+                    method: "POST",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify(data) 
+                })
+                .then(response => response.json())
+                .then(apiData => {
+                    console.log(apiData)
+                })
         }
     }
 
-    // function editExperiment(){
-    //     assignVariantIds()
-
-        // if (variantErrors.length !== 0){
-        //     setErrorMessage(`Not Present In Database: ${variantErrors.join(", ")}`)
-        //     variantErrors.length = 0
-        // }
-        // else {
-        //     console.log("EDIT")
-        //     const data = {
-        //         experiment: {
-        //             date: experimentState.date,
-        //             wt_firefly: experimentState.wt_firefly,
-        //             wt_renilla: experimentState.wt_renilla
-        //         },
-        //        luciferase_values: experimentState.luciferase_values
-        //     }
-        
-            // fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
-            //         method: "PATCH",
-            //         credentials: 'include',
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //             "Accept": "application/json"
-            //         },
-            //         body: JSON.stringify(data) 
-            //     })
-            //     .then(response => response.json())
-            //     .then(apiData => {
-            //         console.log(apiData)
-            //     })
-    //     }
-    // }
-
     return(
         <div id="experiment_form">
-            <form>
-                {<Errors messages={errors} />}
+            <form onSubmit={handleSubmit}>
+                {/* {<Errors messages={errors} />} */}
+                { hasError ? <p>{errors}</p> : <p></p>}
                 {id ? <h3>Edit Experiment</h3> : <h3>Add Experiment</h3>}
 
                 <p>Date: <input value={experimentState.date} type="date" onChange={event => setExperimentState({...experimentState, date: event.target.value})}/></p>
@@ -159,10 +134,38 @@ function ExperimentForm({ submitData }){
                             handleMtChange={handleMtChange} />
                     ))
                 }
-                {id ? <input type="button" value="Edit Experiment"/> : <input type="button" value="Add Experiment"/>}
+                {id ? <input type="button" value="Edit Experiment"/> : <input type="submit" value="Add Experiment" />}
             </form>
         </div>
     )
 }
 
 export default ExperimentForm
+
+
+
+
+
+
+// const data = {
+//         experiment: {
+//             date: experimentState.date,
+//             wt_firefly: experimentState.wt_firefly,
+//             wt_renilla: experimentState.wt_renilla
+//         },
+//        luciferase_values: experimentState.luciferase_values
+//     }
+
+// fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
+//         method: "PATCH",
+//         credentials: 'include',
+//         headers: {
+//             "Content-Type": "application/json",
+//             "Accept": "application/json"
+//         },
+//         body: JSON.stringify(data) 
+//     })
+//     .then(response => response.json())
+//     .then(apiData => {
+//         console.log(apiData)
+//     })
