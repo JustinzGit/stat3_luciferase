@@ -1,5 +1,6 @@
 import { Switch, Route } from 'react-router-dom'
 
+import Experiment from './components/Experiment'
 import ExperimentForm from './components/ExperimentForm'
 import VariantTable from './components/VariantTable'
 import Variant from './components/Variant'
@@ -14,6 +15,10 @@ function App() {
 
       <Route path={'/experiments/edit/:id'}>
         <ExperimentForm />
+      </Route>
+
+      <Route path={'/experiments/:id'}>
+        <Experiment />
       </Route>
 
       <Route path={'/variants/:protein_variant'}>
