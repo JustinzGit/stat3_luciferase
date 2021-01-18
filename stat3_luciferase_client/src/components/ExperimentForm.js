@@ -4,7 +4,7 @@ import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
 
-// import Errors from './Errors'
+import Errors from './Errors'
 
 function ExperimentForm({ submitData }){
     const { id } = useParams()
@@ -12,7 +12,7 @@ function ExperimentForm({ submitData }){
     const [experimentState, setExperimentState] = useExperiment(id)
 
     const [hasError, setHasError] = useState(false)
-    const [errors, setErrors] = useState()
+    const [errors, setErrors] = useState([])
 
     // On mount, render and set todays date
     useEffect(() => {
@@ -73,19 +73,17 @@ function ExperimentForm({ submitData }){
     function handleSubmit(event){
         event.preventDefault()
         setHasError(false)
-        setErrors()
+        setErrors([])
         assignVariantIds()
 
         if (variantsNotInDb.length !== 0){
             setHasError(true)
-            setErrors(`Not In Database: ${variantsNotInDb.join(", ")}`)
+            setErrors([`Not In Database: ${variantsNotInDb.join(", ")}`])
         }
         else if (id){
             console.log("PERFORM EDIT")
         }
-        else {
-            console.log("PERFORM ADD")
-            
+        else { 
             const data = {
                 experiment: {
                     date: experimentState.date,
@@ -106,7 +104,11 @@ function ExperimentForm({ submitData }){
                 })
                 .then(response => response.json())
                 .then(apiData => {
-                    console.log(apiData)
+                    if (apiData.status === 422){
+                        setErrors(apiData.error)
+                        setHasError(true)
+                        
+                    }
                 })
         }
     }
@@ -114,8 +116,7 @@ function ExperimentForm({ submitData }){
     return(
         <div id="experiment_form">
             <form onSubmit={handleSubmit}>
-                {/* {<Errors messages={errors} />} */}
-                { hasError ? <p>{errors}</p> : <p></p>}
+                {hasError && <Errors messages={errors} />}
                 {id ? <h3>Edit Experiment</h3> : <h3>Add Experiment</h3>}
 
                 <p>Date: <input value={experimentState.date} type="date" onChange={event => setExperimentState({...experimentState, date: event.target.value})}/></p>
