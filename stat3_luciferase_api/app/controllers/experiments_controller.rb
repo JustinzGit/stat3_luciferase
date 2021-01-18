@@ -22,7 +22,10 @@ class ExperimentsController < ApplicationController
       @experiment.save
       render json: @experiment, status: :created, location: @experiment
     else
-      render json: @experiment.errors, status: :unprocessable_entity
+      render json: {
+        error: @experiment.errors.full_messages,
+        status: 422
+      }
     end
   end
 
