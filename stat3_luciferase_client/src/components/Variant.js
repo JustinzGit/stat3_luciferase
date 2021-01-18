@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useLocation } from 'react-router-dom'
 import useVariantList from '../hooks/useVariantList'
-import Experiment from './Experiment'
+import VariantData from './VariantData'
 import Navigation from './Navigation'
 
 function Variant() {
@@ -24,7 +24,7 @@ function Variant() {
            <p>Protien Variant: {variant.protein_variant}</p>
            <p>Average Fold Change: {variant.avg_fold_change}</p>
            <p>GOF? {variant.gof ? "Yes" : "No"}</p>
-           {variant.experiments.map((data) => <Experiment data={data}/>)}
+           {variant.experiments.map((data) => <VariantData data={data}/>)}
         </div>
     )
 }
