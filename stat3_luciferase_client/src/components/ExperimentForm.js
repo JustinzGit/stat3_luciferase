@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
 
 import Errors from './Errors'
 
-function ExperimentForm({ submitData }){
+function ExperimentForm(){
     const { id } = useParams()
     const [variantList] = useVariantList()
+    const history = useHistory()
     const [experimentState, setExperimentState] = useExperiment(id)
 
     const [hasError, setHasError] = useState(false)
@@ -108,6 +109,9 @@ function ExperimentForm({ submitData }){
                         setErrors(apiData.error)
                         setHasError(true)
                         
+                    }
+                    else {
+                        history.push(`/experiments/${apiData.id}`)
                     }
                 })
         }
