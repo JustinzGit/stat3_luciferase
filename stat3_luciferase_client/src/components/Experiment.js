@@ -1,21 +1,32 @@
 import React from "react"
-import { useHistory } from "react-router-dom"
+import { useParams } from 'react-router-dom'
+import useExperiment from "../hooks/useExperiment"
 
-function Experiment({ data }){
-    const history = useHistory()
+function Experiment(){
+    const { id } = useParams()
+    const [experimentState, setExperimentState] = useExperiment(id)
 
     return(
         <div>
-            <p>Date: <b>{data.date}</b></p>
-            <p>WT Firefly: <b>{data.wt_firefly}</b></p>
-            <p>WT Renilla: <b>{data.wt_renilla}</b></p>
-            <p>WT FF/Ren: <b>{data.ff_ren_ratio}</b></p>
-            <p>MT Firefly: <b>{data.luciferase_values.firefly}</b></p>
-            <p>MT Renilla: <b>{data.luciferase_values.renilla}</b></p>
-            <p>MT FF/Ren: <b>{data.luciferase_values.ff_ren_ratio}</b></p>
-            <p>Fold Change <b>{data.luciferase_values.fold_change}</b></p>
-            <button onClick={() => history.push(`/experiments/edit/${data.date}`)}>Edit Experiment</button>
+            <p>Date: <b>{experimentState.date}</b></p>
+            <p>WT Firefly: <b>{experimentState.wt_firefly}</b></p>
+            <p>WT Renilla: <b>{experimentState.wt_renilla}</b></p>
+            <p>WT FF/Ren: <b>{experimentState.ff_ren_ratio}</b></p>
             <hr></hr>
+            {
+                experimentState.luciferase_values.map(entry => {
+                    return(
+                        <div>
+                            <p><b>{entry.protein_variant}</b></p>
+                            <p>Firefly: {entry.firefly}</p>
+                            <p>Renillay: {entry.renilla}</p>
+                            <p>FF/Ren: {entry.ff_ren_ratio}</p>
+                            <p>Fold Change: {entry.fold_change}</p>
+                            <hr></hr>
+                        </div>
+                    )
+                })
+            }
         </div>
     )
 }
