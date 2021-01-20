@@ -4,7 +4,7 @@ import useExperiment from "../hooks/useExperiment"
 
 function Experiment(){
     const { id } = useParams()
-    const [experimentState, setExperimentState] = useExperiment(id)
+    const [experimentState] = useExperiment(id)
 
     return(
         <div>
