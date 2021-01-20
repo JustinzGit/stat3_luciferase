@@ -10,10 +10,9 @@ function ExperimentForm(){
     const { id } = useParams()
     const [variantList] = useVariantList()
     const history = useHistory()
-    const [experimentState, setExperimentState] = useExperiment(id)
-
     const [hasError, setHasError] = useState(false)
     const [errors, setErrors] = useState([])
+    const [experimentState, setExperimentState] = useExperiment(id)
 
     // On mount, render and set todays date
     useEffect(() => {
@@ -59,10 +58,13 @@ function ExperimentForm(){
         // Store variant id if variant exists in list
         experimentState.luciferase_values.map(entry => {
             const mutation = entry['protein_variant']
-
+            
             if (variantObject[mutation]){
                 entry['variant_id'] = variantObject[mutation].id
                 delete entry['protein_variant']
+            }
+            else if (mutation === undefined){
+                return entry
             }
             else {
                 variantsNotInDb.push(entry['protein_variant'])
@@ -107,8 +109,7 @@ function ExperimentForm(){
                 .then(apiData => {
                     if (apiData.status === 422){
                         setErrors(apiData.error)
-                        setHasError(true)
-                        
+                        setHasError(true)   
                     }
                     else {
                         history.push(`/experiments/${apiData.id}`)
