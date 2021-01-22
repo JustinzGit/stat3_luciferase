@@ -32,9 +32,9 @@ function ExperimentForm(){
 
     // Set MT luciferase values 
     function handleMtChange(event){
-        const updatedLuciferaseValues = [...experimentState.luciferase_values]
+        const updatedLuciferaseValues = [...experimentState.luciferase_values_attributes]
         updatedLuciferaseValues[event.target.dataset.index][event.target.className] = event.target.value
-        setExperimentState({...experimentState, luciferase_values: updatedLuciferaseValues})
+        setExperimentState({...experimentState, luciferase_values_attributes: updatedLuciferaseValues})
     }
     
     // Add blank luciferase value entries
@@ -42,12 +42,14 @@ function ExperimentForm(){
         const blankEntry = {protein_variant: '', variant_id: '', firefly: '', renilla: ''}
         setExperimentState({ 
             ...experimentState, 
-            luciferase_values: [...experimentState.luciferase_values, blankEntry] 
+            luciferase_values_attributes: [...experimentState.luciferase_values_attributes, blankEntry] 
         })
     }
 
     const variantsNotInDb = []
-    function assignVariantIds(){
+    function assignValues(){
+        // Set the experiment WT ratio
+        experimentState.ff_ren_ratio = experimentState.wt_firefly/experimentState.wt_renilla
 
         // Store variant list in object for quick access to variant id
         const variantObject = {}
@@ -55,38 +57,22 @@ function ExperimentForm(){
             return variantObject[entry.protein_variant] = entry
         })
 
-        // Store variant id if variant exists in list
-        experimentState.luciferase_values.map(entry => {
-            const mutation = entry['protein_variant']
-            
-            if (variantObject[mutation]){
-                entry['variant_id'] = variantObject[mutation].id
-                delete entry['protein_variant']
-            }
-            else if (mutation === undefined){
-                return entry
-            }
-            else {
-                variantsNotInDb.push(entry['protein_variant'])
-            }
-            return entry
-        })
-    }
+        experimentState.luciferase_values_attributes.map(lv => {
+            const mutation = lv.protein_variant
 
-    function assignFoldChange(data){
-        const wtRatio = data.experiment.wt_firefly/data.experiment.wt_renilla
-        const updatedLv = data.experiment.luciferase_values_attributes.map(lv =>{
-            if(!lv.ff_ren_ratio){
-                lv.ff_ren_ratio = parseInt(lv.firefly)/parseInt(lv.renilla)
-                lv.fold_change = lv.ff_ren_ratio/wtRatio
-                return lv
+            // Sets luciferase ratio and fold change
+            lv.ff_ren_ratio = parseInt(lv.firefly)/parseInt(lv.renilla)
+            lv.fold_change = lv.ff_ren_ratio/experimentState.ff_ren_ratio
+            
+            // Assign variant id if variant exists in list
+            if (variantObject[mutation] && lv.variant_id === ''){
+                lv.variant_id = variantObject[mutation].id
             }
-            else {
-                return lv
+            else if (!variantObject[mutation]) {
+                variantsNotInDb.push(lv.protein_variant)
             }
+            return lv
         })
-        data.experiment.luciferase_values_attributes = updatedLv
-        return data
     }
 
     function handleSubmit(event){
@@ -94,25 +80,13 @@ function ExperimentForm(){
 
         setHasError(false)
         setErrors([])
-        assignVariantIds()
+        assignValues()
 
         if (variantsNotInDb.length !== 0){
             setHasError(true)
             setErrors([`Not In Database: ${variantsNotInDb.join(", ")}`])
         }
         else if (id){
-
-            let data = {
-                experiment: {
-                    id: experimentState.id,
-                    date: experimentState.date,
-                    wt_firefly: experimentState.wt_firefly,
-                    wt_renilla: experimentState.wt_renilla,
-                    luciferase_values_attributes: experimentState.luciferase_values
-                }
-            }
-
-            data = assignFoldChange(data) 
             fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
                     method: "PATCH",
                     credentials: 'include',
@@ -120,7 +94,7 @@ function ExperimentForm(){
                         "Content-Type": "application/json",
                         "Accept": "application/json"
                     },
-                    body: JSON.stringify(data) 
+                    body: JSON.stringify(experimentState) 
                 })
                 .then(response => response.json())
                 .then(apiData => {
@@ -133,17 +107,7 @@ function ExperimentForm(){
                     }
                 })
         }
-        else { 
-
-            const data = {
-                experiment: {
-                    date: experimentState.date,
-                    wt_firefly: experimentState.wt_firefly,
-                    wt_renilla: experimentState.wt_renilla
-                },
-               luciferase_values: experimentState.luciferase_values
-            }
-
+        else {
             fetch('http://localhost:3001/experiments', { 
                     method: "POST",
                     credentials: 'include',
@@ -151,7 +115,7 @@ function ExperimentForm(){
                         "Content-Type": "application/json",
                         "Accept": "application/json"
                     },
-                    body: JSON.stringify(data) 
+                    body: JSON.stringify(experimentState) 
                 })
                 .then(response => response.json())
                 .then(apiData => {
@@ -179,11 +143,11 @@ function ExperimentForm(){
                 
                 <p><input onClick={addMutation} type="button" value="Add Mutation"/></p>
                 {
-                    experimentState.luciferase_values.map((values, index) => (
+                    experimentState.luciferase_values_attributes.map((values, index) => (
                         <MutationInputs
                             key={index} 
                             index={index}
-                            luciferaseValues={experimentState.luciferase_values}
+                            luciferaseValues={experimentState.luciferase_values_attributes}
                             variantList={variantList}
                             handleMtChange={handleMtChange} />
                     ))
