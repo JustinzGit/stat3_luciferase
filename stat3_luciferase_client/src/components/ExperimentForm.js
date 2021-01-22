@@ -75,6 +75,8 @@ function ExperimentForm(){
 
     function handleSubmit(event){
         event.preventDefault()
+
+
         setHasError(false)
         setErrors([])
         assignVariantIds()
@@ -84,9 +86,38 @@ function ExperimentForm(){
             setErrors([`Not In Database: ${variantsNotInDb.join(", ")}`])
         }
         else if (id){
-            console.log("PERFORM EDIT")
+
+            const data = {
+                experiment: {
+                    id: experimentState.id,
+                    date: experimentState.date,
+                    wt_firefly: experimentState.wt_firefly,
+                    wt_renilla: experimentState.wt_renilla,
+                    luciferase_values_attributes: experimentState.luciferase_values
+                }
+            }
+
+            fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
+                    method: "PATCH",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify(data) 
+                })
+                .then(response => response.json())
+                .then(apiData => {
+                    if(apiData.status === 500){
+                        console.log(apiData)
+                    }
+                    else {
+                        history.push(`/experiments/${apiData.id}`)
+                    }
+                })
         }
         else { 
+
             const data = {
                 experiment: {
                     date: experimentState.date,
@@ -140,38 +171,10 @@ function ExperimentForm(){
                             handleMtChange={handleMtChange} />
                     ))
                 }
-                {id ? <input type="button" value="Edit Experiment"/> : <input type="submit" value="Add Experiment" />}
+                {id ? <input type="submit" value="Edit Experiment"/> : <input type="submit" value="Add Experiment" />}
             </form>
         </div>
     )
 }
 
 export default ExperimentForm
-
-
-
-
-
-
-// const data = {
-//         experiment: {
-//             date: experimentState.date,
-//             wt_firefly: experimentState.wt_firefly,
-//             wt_renilla: experimentState.wt_renilla
-//         },
-//        luciferase_values: experimentState.luciferase_values
-//     }
-
-// fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
-//         method: "PATCH",
-//         credentials: 'include',
-//         headers: {
-//             "Content-Type": "application/json",
-//             "Accept": "application/json"
-//         },
-//         body: JSON.stringify(data) 
-//     })
-//     .then(response => response.json())
-//     .then(apiData => {
-//         console.log(apiData)
-//     })
