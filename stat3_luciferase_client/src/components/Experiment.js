@@ -14,7 +14,7 @@ function Experiment(){
             <p>WT FF/Ren: <b>{experimentState.ff_ren_ratio}</b></p>
             <hr></hr>
             {
-                experimentState.luciferase_values.map(entry => {
+                experimentState.luciferase_values_attributes.map(entry => {
                     return(
                         <div>
                             <p><b>{entry.protein_variant}</b></p>
