@@ -55,6 +55,17 @@ function ExperimentForm(){
         })
     }
 
+    function deleteExperiment(){
+        fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
+            method: "DELETE",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }})
+        history.push('/variants')
+    }
+
     const variantsNotInDb = []
     function assignValues(){
         // Set the experiment WT ratio
@@ -162,6 +173,7 @@ function ExperimentForm(){
                             handleMtChange={handleMtChange} />
                     ))
                 }
+                {id && <input type="button" value="Remove Experiment" onClick={deleteExperiment}/>}
                 {id ? <input type="submit" value="Edit Experiment"/> : <input type="submit" value="Add Experiment" />}
             </form>
         </div>
