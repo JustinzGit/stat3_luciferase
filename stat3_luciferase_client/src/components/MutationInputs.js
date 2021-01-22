@@ -1,4 +1,4 @@
-function MutationInputs({ index, luciferaseValues, handleMtChange, variantList }){
+function MutationInputs({ index, luciferaseValues, handleMtChange, variantList, removeMutation }){
     return (
         <div key={`mutation_${index}`} id={`mutation_${index}`}>               
             Mutation:<br/>
@@ -35,6 +35,8 @@ function MutationInputs({ index, luciferaseValues, handleMtChange, variantList }
                 className="renilla"
                 onChange={handleMtChange}
                 value={luciferaseValues[index].renilla} /></p>
+
+            <p><input type="button" value="Remove Variant" onClick={() => removeMutation(index)}/></p>
         </div>
     )
 

@@ -46,6 +46,15 @@ function ExperimentForm(){
         })
     }
 
+    function removeMutation(index){
+        experimentState.luciferase_values_attributes.splice(index, 1)
+
+        setExperimentState({
+            ...experimentState,
+            luciferase_values_attributes: experimentState.luciferase_values_attributes
+        })
+    }
+
     const variantsNotInDb = []
     function assignValues(){
         // Set the experiment WT ratio
@@ -149,6 +158,7 @@ function ExperimentForm(){
                             index={index}
                             luciferaseValues={experimentState.luciferase_values_attributes}
                             variantList={variantList}
+                            removeMutation={removeMutation}
                             handleMtChange={handleMtChange} />
                     ))
                 }
