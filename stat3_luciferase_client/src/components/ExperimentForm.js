@@ -73,9 +73,24 @@ function ExperimentForm(){
         })
     }
 
+    function assignFoldChange(data){
+        const wtRatio = data.experiment.wt_firefly/data.experiment.wt_renilla
+        const updatedLv = data.experiment.luciferase_values_attributes.map(lv =>{
+            if(!lv.ff_ren_ratio){
+                lv.ff_ren_ratio = parseInt(lv.firefly)/parseInt(lv.renilla)
+                lv.fold_change = lv.ff_ren_ratio/wtRatio
+                return lv
+            }
+            else {
+                return lv
+            }
+        })
+        data.experiment.luciferase_values_attributes = updatedLv
+        return data
+    }
+
     function handleSubmit(event){
         event.preventDefault()
-
 
         setHasError(false)
         setErrors([])
@@ -87,7 +102,7 @@ function ExperimentForm(){
         }
         else if (id){
 
-            const data = {
+            let data = {
                 experiment: {
                     id: experimentState.id,
                     date: experimentState.date,
@@ -97,6 +112,7 @@ function ExperimentForm(){
                 }
             }
 
+            data = assignFoldChange(data) 
             fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
                     method: "PATCH",
                     credentials: 'include',
@@ -108,8 +124,9 @@ function ExperimentForm(){
                 })
                 .then(response => response.json())
                 .then(apiData => {
-                    if(apiData.status === 500){
-                        console.log(apiData)
+                    if(apiData.status === 422){
+                        setErrors(apiData.error)
+                        setHasError(true) 
                     }
                     else {
                         history.push(`/experiments/${apiData.id}`)
