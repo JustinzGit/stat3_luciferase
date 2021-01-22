@@ -7,6 +7,7 @@ function useExperiment(id = null){
         wt_firefly: '',
         wt_renilla: '',
         luciferase_values: [{
+            id: '',
             protein_variant: '', 
             variant_id: '', 
             firefly: '', 
@@ -20,6 +21,7 @@ function useExperiment(id = null){
             .then(response => response.json())
             .then(apiData => {
                 const luciferase_values = apiData.variants.map(variant => ({
+                    id: variant.luciferase_values.id,
                     protein_variant: variant.protein_variant,
                     variant_id: variant.id,
                     firefly: variant.luciferase_values.firefly,
