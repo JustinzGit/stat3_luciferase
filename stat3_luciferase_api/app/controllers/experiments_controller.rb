@@ -42,10 +42,11 @@ class ExperimentsController < ApplicationController
     end
   end
 
-  # # DELETE /experiments/1
-  # def destroy
-  #   @experiment.destroy
-  # end
+  # DELETE /experiments/1
+  def destroy
+    @experiment = Experiment.find(params[:id])
+    @experiment.destroy
+  end
 
   private
     # Only allow a trusted parameter "white list" through.
