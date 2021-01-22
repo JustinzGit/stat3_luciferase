@@ -31,10 +31,8 @@ class ExperimentsController < ApplicationController
 
   # PATCH/PUT /experiments/1
   def update
-    params = experiment_params
     @experiment = Experiment.find(params[:id])
-    updated_params = @experiment.perform_lv_calculations(params)
-    @experiment.update(updated_params)
+    @experiment.update(experiment_params)
 
     if @experiment
       render json: @experiment

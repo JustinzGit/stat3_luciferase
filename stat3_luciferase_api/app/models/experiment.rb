@@ -26,17 +26,4 @@ class Experiment < ApplicationRecord
         self.calculate_ff_ren_ratio
         self.calculate_fold_changes
     end 
-
-    # Sets ratios and fold changes of new luciferase entries on updated
-    def perform_lv_calculations(params)
-        upadted_lv = params[:luciferase_values_attributes].map { |lv|
-            if !lv[:ff_ren_ratio]
-                lv[:ff_ren_ratio] = lv[:firefly].to_i/lv[:renilla].to_i
-                lv[:fold_change] = lv[:ff_ren_ratio]/self.ff_ren_ratio
-            end
-            lv
-        }
-        params[:luciferase_values_attributes] = upadted_lv
-        return params
-    end
 end
