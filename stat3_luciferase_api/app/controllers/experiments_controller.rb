@@ -29,14 +29,19 @@ class ExperimentsController < ApplicationController
     end
   end
 
-  # # PATCH/PUT /experiments/1
-  # def update
-  #   if @experiment.update(experiment_params)
-  #     render json: @experiment
-  #   else
-  #     render json: @experiment.errors, status: :unprocessable_entity
-  #   end
-  # end
+  # PATCH/PUT /experiments/1
+  def update
+    params = experiment_params
+    @experiment = Experiment.find(params[:id])
+    updated_params = @experiment.perform_lv_calculations(params)
+    @experiment.update(updated_params)
+
+    if @experiment
+      render json: @experiment
+    else
+      render json: @experiment.errors, status: :unprocessable_entity
+    end
+  end
 
   # # DELETE /experiments/1
   # def destroy
@@ -46,10 +51,10 @@ class ExperimentsController < ApplicationController
   private
     # Only allow a trusted parameter "white list" through.
     def experiment_params
-      params.require(:experiment).permit(:date, :wt_firefly, :wt_renilla)
+      params.permit(experiment: [:id, :date, :wt_firefly, :wt_renilla, luciferase_values_attributes: [:id, :variant_id, :firefly, :renilla, :ff_ren_ratio, :fold_change]]).require(:experiment)
     end
 
     def luciferase_values_params
-      params.permit(luciferase_values: [:variant_id, :firefly, :renilla]).require(:luciferase_values)
+      params.permit(luciferase_values: [:id, :variant_id, :firefly, :renilla]).require(:luciferase_values)
     end 
 end
