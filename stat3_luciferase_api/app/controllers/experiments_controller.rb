@@ -15,8 +15,6 @@ class ExperimentsController < ApplicationController
   # POST /experiments
   def create
     @experiment = Experiment.new(experiment_params)
-    @experiment.luciferase_values.build(luciferase_values_params)
-    @experiment.set_ratios_and_fold_changes
   
     if @experiment.valid?
       @experiment.save
@@ -49,10 +47,7 @@ class ExperimentsController < ApplicationController
   private
     # Only allow a trusted parameter "white list" through.
     def experiment_params
-      params.permit(experiment: [:id, :date, :wt_firefly, :wt_renilla, luciferase_values_attributes: [:id, :variant_id, :firefly, :renilla, :ff_ren_ratio, :fold_change]]).require(:experiment)
+      params.permit(:id, :date, :wt_firefly, :wt_renilla, :ff_ren_ratio, 
+        luciferase_values_attributes: [:id, :variant_id, :firefly, :renilla, :ff_ren_ratio, :fold_change])
     end
-
-    def luciferase_values_params
-      params.permit(luciferase_values: [:id, :variant_id, :firefly, :renilla]).require(:luciferase_values)
-    end 
 end
