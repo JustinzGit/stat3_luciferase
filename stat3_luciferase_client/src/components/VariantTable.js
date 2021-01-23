@@ -54,7 +54,7 @@ function VariantTable() {
                     </tr>
                     {
                         variantList.map(variant => (
-                                <tr key={variant.id} onClick={() => history.push(`/variants/${variant.protein_variant}`)}>
+                                <tr key={variant.id} onClick={() => history.push(`/variants/${variant.id}`)}>
                                     <td>{variant.protein_variant}</td>
                                     <td>{variant.avg_fold_change}</td>
                                 </tr>

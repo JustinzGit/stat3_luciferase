@@ -3,14 +3,12 @@ class VariantsController < ApplicationController
   # GET /variants
   def index
     @variants = Variant.all.order(aa_position: :asc)
-
     render json: @variants, each_serializer: VariantsSerializer
   end
 
   # GET /variants/A106V
   def show
-    @variant = Variant.find_by(protein_variant: params[:protein_variant])
-
+    @variant = Variant.find(params[:id])
     render json: @variant, serializer: VariantSerializer
   end
 
