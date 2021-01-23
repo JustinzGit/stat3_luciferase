@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import Navigation from '../Navigation'
 import useVariantList from '../../hooks/useVariantList'
@@ -12,6 +12,13 @@ function VariantTable() {
     const [foldChangeToggle, setFoldChangeToggle] = useState(true)
     const [variantToggle, setVariantToggle] = useState(true)
     const history = useHistory()
+    
+    // Remove alert messages on unmount
+    useEffect(() => {
+        return function resetAlert(){
+            store.alerts.set('')
+        } 
+    },[])
 
     function sortByFoldChange(){
         const sortedVariantList = variantList.sort(function(a, b){
@@ -41,7 +48,7 @@ function VariantTable() {
     
     return(
         <div id="variant-table">
-            <h3>{store.alerts.get}</h3>
+            {store.alerts.get !== '' && <h3>{store.alerts.get}</h3>}
             <Navigation currentPath={history.location.pathname} />
             <button onClick={sortByFoldChange}>Sort By Fold Change</button>
             <button onClick={sortByVariant}>Sort By Variant</button>
