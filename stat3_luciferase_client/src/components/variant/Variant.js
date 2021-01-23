@@ -18,7 +18,7 @@ function Variant() {
 
     return(
         <div>
-           <Navigation currentPath={location.pathname} variants={variantList}/>
+           <Navigation currentPath={location.pathname} />
            <p>Protien Variant: {variant.protein_variant}</p>
            <p>Average Fold Change: {variant.avg_fold_change}</p>
            <p>GOF? {variant.gof ? "Yes" : "No"}</p>

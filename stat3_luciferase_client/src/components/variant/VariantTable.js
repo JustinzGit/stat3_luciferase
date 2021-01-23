@@ -43,7 +43,7 @@ function VariantTable() {
     return(
         <div id="variant-table">
             <h3>{store.alerts.get}</h3>
-            <Navigation currentPath={location.pathname} variants={variantList}/>
+            <Navigation currentPath={location.pathname} />
             <button onClick={sortByFoldChange}>Sort By Fold Change</button>
             <button onClick={sortByVariant}>Sort By Variant</button>
             <table>

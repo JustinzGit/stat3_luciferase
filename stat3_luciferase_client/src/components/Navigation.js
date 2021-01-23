@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom'
 
-function Navigation({ variants, currentPath }) {
+function Navigation({ currentPath }) {
     const [selectedVariant, setSelectedVariant] = useState('')
     const history = useHistory()
 
