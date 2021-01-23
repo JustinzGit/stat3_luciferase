@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom'
+import useVariantList from '../hooks/useVariantList';
 
 function Navigation({ currentPath }) {
+    const [variantList] = useVariantList()
     const [selectedVariant, setSelectedVariant] = useState('')
     const history = useHistory()
 
@@ -10,7 +12,7 @@ function Navigation({ currentPath }) {
 
         // Store variant list in object for quick access to variant id
         const variantObject = {}
-        variants.map(entry => {
+        variantList.map(entry => {
             return variantObject[entry.protein_variant] = entry
         })
 
@@ -28,7 +30,7 @@ function Navigation({ currentPath }) {
             <p><form onSubmit={goToVariant}>
                 <input onChange={event => setSelectedVariant(event.target.value)} list="variants" id="variant-selection" autoComplete="off" />
                 <datalist id="variants">
-                    {variants.map((variant) => <option key={variant.id} value={variant.protein_variant}/>)}
+                    {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}/>)}
                 </datalist>
                 <input type="submit" value="Go To Variant"/>
             </form></p>
