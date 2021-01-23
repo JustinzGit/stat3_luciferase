@@ -8,6 +8,7 @@ import Navigation from '../Navigation'
 import {AppContext} from '../../App'
 
 import Errors from '../Errors'
+import RemoveExperiment from './RemoveExperiment'
 
 function ExperimentForm(){
     let store = useContext(AppContext)
@@ -58,19 +59,6 @@ function ExperimentForm(){
             ...experimentState,
             luciferase_values_attributes: experimentState.luciferase_values_attributes
         })
-    }
-
-    function deleteExperiment(){
-        fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
-            method: "DELETE",
-            credentials: 'include',
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }})
-        
-        store.alerts.set("Experiment Deleted")
-        history.push('/variants')
     }
 
     const variantsNotInDb = []
@@ -182,7 +170,7 @@ function ExperimentForm(){
                             handleMtChange={handleMtChange} />
                     ))
                 }
-                {id && <input type="button" value="Remove Experiment" onClick={deleteExperiment}/>}
+                {id && <RemoveExperiment id={experimentState.id} />}
                 {id ? <input type="submit" value="Edit Experiment"/> : <input type="submit" value="Add Experiment" />}
             </form>
         </div>

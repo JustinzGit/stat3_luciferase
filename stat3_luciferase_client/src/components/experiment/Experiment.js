@@ -2,6 +2,7 @@ import React from "react"
 import { useParams, useHistory } from 'react-router-dom'
 import useExperiment from "../../hooks/useExperiment"
 import Navigation from '../Navigation'
+import RemoveExperiment from '../experiment/RemoveExperiment'
 
 function Experiment(){
     const { id } = useParams()
@@ -19,7 +20,7 @@ function Experiment(){
             {
                 experimentState.luciferase_values_attributes.map(entry => {
                     return(
-                        <div>
+                        <div key={entry.id}>
                             <p><b>{entry.protein_variant}</b></p>
                             <p>Firefly: {entry.firefly}</p>
                             <p>Renillay: {entry.renilla}</p>
@@ -30,6 +31,8 @@ function Experiment(){
                     )
                 })
             }
+             <button onClick={() => history.push(`/experiments/edit/${id}`)}>Edit Experiment</button>
+             <RemoveExperiment id={id} />
         </div>
     )
 }
