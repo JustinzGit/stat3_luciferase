@@ -26,14 +26,15 @@ function Navigation({ currentPath }) {
     return(
         <div id="navigation">
             {currentPath !== "/variants" && <NavLink to="/variants">Variant Table</NavLink>}
+            {currentPath !== "/experiments/add" && <NavLink to="/experiments/add">Add Experiment</NavLink>}
 
-            <p><form onSubmit={goToVariant}>
+            <form onSubmit={goToVariant}>
                 <input onChange={event => setSelectedVariant(event.target.value)} list="variants" id="variant-selection" autoComplete="off" />
                 <datalist id="variants">
                     {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}/>)}
                 </datalist>
                 <input type="submit" value="Go To Variant"/>
-            </form></p>
+            </form><br></br>
         </div>
     )
 }
