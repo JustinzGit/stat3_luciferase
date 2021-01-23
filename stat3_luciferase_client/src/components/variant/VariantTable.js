@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react"
 import { useHistory, useLocation } from "react-router-dom"
-import Navigation from './Navigation'
-import useVariantList from '../hooks/useVariantList'
+import Navigation from '../Navigation'
+import useVariantList from '../../hooks/useVariantList'
 
-import {AppContext} from '../App'
+import {AppContext} from '../../App'
 
 function VariantTable() {
     const store = useContext(AppContext)

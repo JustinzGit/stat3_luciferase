@@ -1,9 +1,10 @@
 import { Switch, Route } from 'react-router-dom'
 import React, { useState }  from 'react'
-import Experiment from './components/Experiment'
-import ExperimentForm from './components/ExperimentForm'
-import VariantTable from './components/VariantTable'
-import Variant from './components/Variant'
+
+import Experiment from './components/experiment/Experiment'
+import ExperimentForm from './components/experiment/ExperimentForm'
+import VariantTable from './components/variant/VariantTable'
+import Variant from './components/variant/Variant'
 
 const AppContext = React.createContext({})
 

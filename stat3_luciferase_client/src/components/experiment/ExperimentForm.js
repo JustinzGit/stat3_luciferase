@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import useExperiment from '../hooks/useExperiment'
-import useVariantList from '../hooks/useVariantList'
+import useExperiment from '../../hooks/useExperiment'
+import useVariantList from '../../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
 
-import {AppContext} from '../App'
+import {AppContext} from '../../App'
 
-import Errors from './Errors'
+import Errors from '../Errors'
 
 function ExperimentForm(){
     let store = useContext(AppContext)

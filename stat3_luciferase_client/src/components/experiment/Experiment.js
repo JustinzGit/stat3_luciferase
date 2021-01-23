@@ -1,6 +1,6 @@
 import React from "react"
 import { useParams } from 'react-router-dom'
-import useExperiment from "../hooks/useExperiment"
+import useExperiment from "../../hooks/useExperiment"
 
 function Experiment(){
     const { id } = useParams()
