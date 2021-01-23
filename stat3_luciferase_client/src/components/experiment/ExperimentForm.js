@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import useExperiment from '../../hooks/useExperiment'
 import useVariantList from '../../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
+import Navigation from '../Navigation'
 
 import {AppContext} from '../../App'
 
@@ -158,6 +159,7 @@ function ExperimentForm(){
 
     return(
         <div id="experiment_form">
+            <Navigation currentPath={history.location.pathname}/>
             <form onSubmit={handleSubmit}>
              
                 {hasError && <Errors messages={errors} />}

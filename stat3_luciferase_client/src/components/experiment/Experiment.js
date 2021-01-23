@@ -1,13 +1,16 @@
 import React from "react"
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import useExperiment from "../../hooks/useExperiment"
+import Navigation from '../Navigation'
 
 function Experiment(){
     const { id } = useParams()
+    const history = useHistory()
     const [experimentState] = useExperiment(id)
 
     return(
         <div>
+            <Navigation currentPath={history.location.pathname}/>
             <p>Date: <b>{experimentState.date}</b></p>
             <p>WT Firefly: <b>{experimentState.wt_firefly}</b></p>
             <p>WT Renilla: <b>{experimentState.wt_renilla}</b></p>
