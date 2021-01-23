@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom'
 import useVariantList from '../hooks/useVariantList';
+import useExperimentList from '../hooks/useExperimentList'
 
 function Navigation({ currentPath }) {
-    const [variantList] = useVariantList()
-    const [selectedVariant, setSelectedVariant] = useState('')
     const history = useHistory()
 
+    const [variantList] = useVariantList()
+    const [experimentList] = useExperimentList()
+
+    const [selectedVariant, setSelectedVariant] = useState('')
+    const [selectedExperiment, setSelectedExperiment] = useState('')
+    
     function goToVariant(event){
         event.preventDefault()
 
@@ -23,9 +28,24 @@ function Navigation({ currentPath }) {
         }
     }
 
+    function goToExperiment(event){
+        event.preventDefault()
+
+        // Store experiment list in object for quick access to experiment id
+        const experimentObject = {}
+        experimentList.map(entry => {
+            return experimentObject[entry.date] = entry
+        })
+
+        if(experimentObject[selectedExperiment]){
+            const id = experimentObject[selectedExperiment].id
+            history.push(`/experiments/${id}`)
+        }
+    }
+
     return(
         <div id="navigation">
-            {currentPath !== "/variants" && <NavLink to="/variants">Variant Table</NavLink>}
+            {currentPath !== "/variants" && <NavLink to="/variants">Variant Table</NavLink>}<br></br>
             {currentPath !== "/experiments/add" && <NavLink to="/experiments/add">Add Experiment</NavLink>}
 
             <form onSubmit={goToVariant}>
@@ -34,6 +54,11 @@ function Navigation({ currentPath }) {
                     {variantList.map((variant) => <option key={variant.id} value={variant.protein_variant}/>)}
                 </datalist>
                 <input type="submit" value="Go To Variant"/>
+            </form><br></br>
+
+            <form onSubmit={goToExperiment}>
+                <input type="date" onChange={event => setSelectedExperiment(event.target.value)} />
+                <input type="submit" value="Go To Experiment"/>
             </form><br></br>
         </div>
     )
