@@ -17,24 +17,20 @@ function App() {
   return (
     <AppContext.Provider value={store}>
       <Switch>
-        <Route path={'/experiments/add'}>
-          <ExperimentForm />
-        </Route>
-
-        <Route path={'/experiments/edit/:id'}>
-          <ExperimentForm />
-        </Route>
-
-        <Route path={'/experiments/:id'}>
-          <Experiment />
-        </Route>
-
-        <Route path={'/variants/:protein_variant'}>
+        <Route path={'/variants/:id'}>
           <Variant />
         </Route>
 
         <Route path={'/variants'}>
           <VariantTable />
+        </Route>
+
+        <Route path={['/experiments/add', '/experiments/edit/:id']}>
+          <ExperimentForm />
+        </Route>
+
+        <Route path={'/experiments/:id'}>
+          <Experiment />
         </Route>
       </Switch>
     </AppContext.Provider>
