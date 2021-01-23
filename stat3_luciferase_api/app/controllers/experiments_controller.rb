@@ -30,9 +30,11 @@ class ExperimentsController < ApplicationController
   # PATCH/PUT /experiments/1
   def update
     @experiment = Experiment.find(params[:id])
-    @experiment.update(experiment_params)
+    @experiment.destroy
+    @experiment = Experiment.new(experiment_params)
 
-    if @experiment
+    if @experiment.valid?
+      @experiment.save
       render json: @experiment
     else
       render json: {
