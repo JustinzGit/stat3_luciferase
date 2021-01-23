@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react"
-import { useHistory, useLocation } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import Navigation from '../Navigation'
 import useVariantList from '../../hooks/useVariantList'
 
@@ -7,8 +7,7 @@ import {AppContext} from '../../App'
 
 function VariantTable() {
     const store = useContext(AppContext)
-
-    const location = useLocation()
+    
     const [ variantList, setVariantList ] = useVariantList()
     const [foldChangeToggle, setFoldChangeToggle] = useState(true)
     const [variantToggle, setVariantToggle] = useState(true)
@@ -43,7 +42,7 @@ function VariantTable() {
     return(
         <div id="variant-table">
             <h3>{store.alerts.get}</h3>
-            <Navigation currentPath={location.pathname} />
+            <Navigation currentPath={history.location.pathname} />
             <button onClick={sortByFoldChange}>Sort By Fold Change</button>
             <button onClick={sortByVariant}>Sort By Variant</button>
             <table>
