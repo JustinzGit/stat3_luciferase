@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import useExperiment from '../hooks/useExperiment'
 import useVariantList from '../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
 
+import {AppContext} from '../App'
+
 import Errors from './Errors'
 
 function ExperimentForm(){
+    let store = useContext(AppContext)
+
     const { id } = useParams()
     const [variantList] = useVariantList()
     const history = useHistory()
@@ -63,6 +67,8 @@ function ExperimentForm(){
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }})
+        
+        store.alerts.set("Experiment Deleted")
         history.push('/variants')
     }
 
@@ -153,6 +159,7 @@ function ExperimentForm(){
     return(
         <div id="experiment_form">
             <form onSubmit={handleSubmit}>
+             
                 {hasError && <Errors messages={errors} />}
                 {id ? <h3>Edit Experiment</h3> : <h3>Add Experiment</h3>}
 
