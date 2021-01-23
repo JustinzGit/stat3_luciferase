@@ -63,6 +63,7 @@ function ExperimentForm(){
 
     const variantsNotInDb = []
     function assignValues(){
+
         // Set the experiment WT ratio
         experimentState.ff_ren_ratio = experimentState.wt_firefly/experimentState.wt_renilla
 
@@ -96,14 +97,13 @@ function ExperimentForm(){
         setHasError(false)
         setErrors([])
         assignValues()
-
         if (variantsNotInDb.length !== 0){
             setHasError(true)
             setErrors([`Not In Database: ${variantsNotInDb.join(", ")}`])
         }
         else if (id){
             fetch(`http://localhost:3001/experiments/${experimentState.id}`, { 
-                    method: "PATCH",
+                    method: "PUT",
                     credentials: 'include',
                     headers: {
                         "Content-Type": "application/json",
