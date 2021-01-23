@@ -1,25 +1,18 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { useHistory, useLocation } from "react-router-dom"
 import Navigation from './Navigation'
 import useVariantList from '../hooks/useVariantList'
 
+import {AppContext} from '../App'
+
 function VariantTable() {
+    const store = useContext(AppContext)
+
     const location = useLocation()
     const [ variantList, setVariantList ] = useVariantList()
     const [foldChangeToggle, setFoldChangeToggle] = useState(true)
     const [variantToggle, setVariantToggle] = useState(true)
     const history = useHistory()
-
-    function renderVariantRows(){
-        return variantList.map(variant => {
-            return(
-                <tr key={variant.id} onClick={() => history.push(`/variants/${variant.protein_variant}`)}>
-                    <td>{variant.protein_variant}</td>
-                    <td>{variant.avg_fold_change}</td>
-                </tr>
-            )
-        })
-    }
 
     function sortByFoldChange(){
         const sortedVariantList = variantList.sort(function(a, b){
@@ -37,10 +30,10 @@ function VariantTable() {
     function sortByVariant(){
         const sortedVariantList = variantList.sort(function(a, b){
             if (variantToggle){
-                return a.aa_position - b.aa_position
+                return b.aa_position - a.aa_position  
             }
             else {
-                return b.aa_position - a.aa_position
+                return a.aa_position - b.aa_position
             }
         })
         setVariantList(sortedVariantList)
@@ -49,6 +42,7 @@ function VariantTable() {
     
     return(
         <div id="variant-table">
+            <h3>{store.alerts.get}</h3>
             <Navigation currentPath={location.pathname} variants={variantList}/>
             <button onClick={sortByFoldChange}>Sort By Fold Change</button>
             <button onClick={sortByVariant}>Sort By Variant</button>
@@ -58,7 +52,14 @@ function VariantTable() {
                         <th>Variant</th>
                         <th>Fold Change</th>
                     </tr>
-                    {renderVariantRows()}
+                    {
+                        variantList.map(variant => (
+                                <tr key={variant.id} onClick={() => history.push(`/variants/${variant.protein_variant}`)}>
+                                    <td>{variant.protein_variant}</td>
+                                    <td>{variant.avg_fold_change}</td>
+                                </tr>
+                            ))
+                    }
                 </tbody>
             </table>
         </div>
