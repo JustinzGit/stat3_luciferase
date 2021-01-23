@@ -7,16 +7,14 @@ import Navigation from './Navigation'
 function Variant() {
     const location = useLocation()
     const [variantList] = useVariantList()
-    const { protein_variant } = useParams()
+    const { id } = useParams()
     const [variant, setVariant] = useState({ experiments: [] })
 
     useEffect(() => {
-        fetch(`http://localhost:3001/variants/${protein_variant}`, { credentials: 'include' })
+        fetch(`http://localhost:3001/variants/${id}`, { credentials: 'include' })
         .then(response => response.json())
-        .then(variant => {
-            setVariant(variant)
-        })
-    },[protein_variant])
+        .then(variant => setVariant(variant))
+    },[id])
 
     return(
         <div>
@@ -24,7 +22,7 @@ function Variant() {
            <p>Protien Variant: {variant.protein_variant}</p>
            <p>Average Fold Change: {variant.avg_fold_change}</p>
            <p>GOF? {variant.gof ? "Yes" : "No"}</p>
-           {variant.experiments.map((data) => <VariantData data={data}/>)}
+           {variant.experiments.map((data) => <VariantData key={data.id} variantName={variant.protein_variant} data={data}/>)}
         </div>
     )
 }
