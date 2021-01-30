@@ -15,7 +15,7 @@ class ExperimentsController < ApplicationController
   # POST /experiments
   def create
     @experiment = Experiment.new(experiment_params)
-  
+    
     if @experiment.valid?
       @experiment.save
       render json: @experiment, status: :created, location: @experiment
@@ -29,12 +29,10 @@ class ExperimentsController < ApplicationController
 
   # PATCH/PUT /experiments/1
   def update
-    @experiment = Experiment.find(params[:id])
-    @experiment.destroy
+    Experiment.find(params[:id]).destroy
     @experiment = Experiment.new(experiment_params)
 
-    if @experiment.valid?
-      @experiment.save
+    if @experiment.save
       render json: @experiment
     else
       render json: {
@@ -53,7 +51,7 @@ class ExperimentsController < ApplicationController
   private
     # Only allow a trusted parameter "white list" through.
     def experiment_params
-      params.permit(:id, :date, :wt_firefly, :wt_renilla, :ff_ren_ratio, 
-        luciferase_values_attributes: [:id, :variant_id, :firefly, :renilla, :ff_ren_ratio, :fold_change])
+      params.permit(:date, :wt_firefly, :wt_renilla, :ff_ren_ratio, 
+        luciferase_values_attributes: [:variant_id, :firefly, :renilla, :ff_ren_ratio, :fold_change])
     end
 end
