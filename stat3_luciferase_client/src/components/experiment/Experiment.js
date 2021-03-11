@@ -1,16 +1,25 @@
-import React from "react"
+import React, { useEffect, useContext } from "react"
 import { useParams, useHistory } from 'react-router-dom'
 import useExperiment from "../../hooks/useExperiment"
 import Navigation from '../Navigation'
 import RemoveExperiment from '../experiment/RemoveExperiment'
+import {AppContext} from '../../App'
 
-function Experiment(){
+function Experiment({ alerts }){
     const { id } = useParams()
     const history = useHistory()
+    let store = useContext(AppContext)
     const [experimentState] = useExperiment(id)
+
+    useEffect(() =>{
+        return function cleanup(){
+            store.alerts.set('')
+        }
+    },[])
 
     return(
         <div>
+            <h3>{alerts !== '' && alerts }</h3>
             <Navigation currentPath={history.location.pathname}/>
             <p>Date: <b>{experimentState.date}</b></p>
             <p>WT Firefly: <b>{experimentState.wt_firefly}</b></p>
