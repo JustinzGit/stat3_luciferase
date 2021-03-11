@@ -23,7 +23,7 @@ function App() {
         </Route>
 
         <Route path={'/variants'}>
-          <VariantTable />
+          <VariantTable alerts={store.alerts.get}/>
         </Route>
 
         <Route path={['/experiments/add', '/experiments/edit/:id']}>
