@@ -31,7 +31,7 @@ function App() {
         </Route>
 
         <Route path={'/experiments/:id'}>
-          <Experiment />
+          <Experiment alerts={store.alerts.get} />
         </Route>
       </Switch>
     </AppContext.Provider>
