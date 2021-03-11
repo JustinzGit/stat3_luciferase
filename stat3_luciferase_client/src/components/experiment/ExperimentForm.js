@@ -4,6 +4,7 @@ import useExperiment from '../../hooks/useExperiment'
 import useVariantList from '../../hooks/useVariantList'
 import MutationInputs from './MutationInputs'
 import Navigation from '../Navigation'
+import getTodaysDate from '../../getTodaysDate'
 
 import {AppContext} from '../../App'
 
@@ -22,11 +23,7 @@ function ExperimentForm(){
 
     // On mount, render and set todays date
     useEffect(() => {
-        let dateObj = new Date()
-        let day = String(dateObj.getDate()).padStart(2, '0')
-        let month = String(dateObj.getMonth() + 1).padStart(2, '0')
-        let year = dateObj.getFullYear();
-        let todaysDate = year + '-' + month + '-' + day
+        let todaysDate = getTodaysDate()
         setExperimentState({ ...experimentState, date: todaysDate})
         // eslint-disable-next-line
     }, [])
@@ -93,10 +90,10 @@ function ExperimentForm(){
 
     function handleSubmit(event){
         event.preventDefault()
-
         setHasError(false)
         setErrors([])
         assignValues()
+
         if (variantsNotInDb.length !== 0){
             setHasError(true)
             setErrors([`Not In Database: ${variantsNotInDb.join(", ")}`])
