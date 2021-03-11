@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom'
 import useVariantList from '../hooks/useVariantList';
 import useExperimentList from '../hooks/useExperimentList'
+import getTodaysDate from '../getTodaysDate'
 
 function Navigation({ currentPath }) {
     const history = useHistory()
+    const todaysDate = getTodaysDate()
 
     const [variantList] = useVariantList()
     const [experimentList] = useExperimentList()
@@ -57,7 +59,7 @@ function Navigation({ currentPath }) {
             </form><br></br>
 
             <form onSubmit={goToExperiment}>
-                <input type="date" onChange={event => setSelectedExperiment(event.target.value)} />
+                <input type="date" value={todaysDate} onChange={event => setSelectedExperiment(event.target.value)} />
                 <input type="submit" value="Go To Experiment"/>
             </form><br></br>
         </div>
