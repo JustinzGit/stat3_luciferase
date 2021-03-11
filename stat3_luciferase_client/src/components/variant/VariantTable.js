@@ -5,21 +5,20 @@ import useVariantList from '../../hooks/useVariantList'
 
 import {AppContext} from '../../App'
 
-function VariantTable() {
-    const store = useContext(AppContext)
+function VariantTable({ alerts }) {
+    let store = useContext(AppContext)
     
     const [ variantList, setVariantList ] = useVariantList()
     const [foldChangeToggle, setFoldChangeToggle] = useState(true)
     const [variantToggle, setVariantToggle] = useState(true)
     const history = useHistory()
-    
-    // Remove alert messages on unmount
-    useEffect(() => {
-        return function resetAlert(){
-            store.alerts.set('')
-        } 
-    },[])
 
+    useEffect(() => {
+        return function cleanup(){
+            store.alerts.set('')
+        }
+    },[])
+    
     function sortByFoldChange(){
         const sortedVariantList = variantList.sort(function(a, b){
             if (foldChangeToggle){
@@ -48,7 +47,7 @@ function VariantTable() {
     
     return(
         <div id="variant-table">
-            {store.alerts.get !== '' && <h3>{store.alerts.get}</h3>}
+            {alerts !== '' && <h3>{alerts}</h3>}
             <Navigation currentPath={history.location.pathname} />
             <button onClick={sortByFoldChange}>Sort By Fold Change</button>
             <button onClick={sortByVariant}>Sort By Variant</button>
