@@ -136,6 +136,7 @@ function ExperimentForm(){
                         setHasError(true)   
                     }
                     else {
+                        store.alerts.set("Experiment Has Been Added")
                         history.push(`/experiments/${apiData.id}`)
                     }
                 })
