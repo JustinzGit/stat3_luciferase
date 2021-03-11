@@ -11,15 +11,9 @@ function Experiment({ alerts }){
     let store = useContext(AppContext)
     const [experimentState] = useExperiment(id)
 
-    useEffect(() =>{
-        return function cleanup(){
-            store.alerts.set('')
-        }
-    },[])
-
     return(
         <div>
-            <h3>{alerts !== '' && alerts }</h3>
+            {alerts !== '' && <h3>{alerts}</h3>}
             <Navigation currentPath={history.location.pathname}/>
             <p>Date: <b>{experimentState.date}</b></p>
             <p>WT Firefly: <b>{experimentState.wt_firefly}</b></p>
