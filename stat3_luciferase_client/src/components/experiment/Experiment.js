@@ -1,14 +1,12 @@
-import React, { useEffect, useContext } from "react"
+import React from "react"
 import { useParams, useHistory } from 'react-router-dom'
 import useExperiment from "../../hooks/useExperiment"
 import Navigation from '../Navigation'
 import RemoveExperiment from '../experiment/RemoveExperiment'
-import {AppContext} from '../../App'
 
 function Experiment({ alerts }){
     const { id } = useParams()
     const history = useHistory()
-    let store = useContext(AppContext)
     const [experimentState] = useExperiment(id)
 
     return(
